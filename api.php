@@ -1,5 +1,38 @@
 <?php
 
+    class Orders{
+        var $error=false;
+        var $orders=array();
+
+        function __construct($error,$orders){
+            $this->error=$error;
+            $this->orders=$orders;
+        }
+    } 
+
+    class OrdersElem{
+        var $id;
+        var $profession_id;
+        var $industry_id;
+        var $name;
+        var $description;
+        var $price;
+        var $userName;
+        var $userSurname;
+
+        function __construct($id,$profession_id,$industry_id,$name,$description,$price,$userName,$userSurname){
+            $this->id=$id;
+            $this->profession_id=$profession_id;
+            $this->industry_id=$industry_id;
+            $this->name=$name;
+            $this->description=$description;
+            $this->price=$price;
+            $this->userName=$userName;
+            $this->userSurname=$userSurname;
+        }
+
+    }
+
     class Professions{
         var $error=false;
         var $professions=array();
@@ -20,7 +53,6 @@
             $this->name=$name;
             $this->industry_id=$industry_id;
         }
-
     }
 
     class Industry{
@@ -141,6 +173,88 @@
             return $retJSON;
         }
 
+
+        function getOrders($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->industry_id)){
+                try{
+                    $mass=array();
+                    $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                    $result=$sql->mySQLWorker->connectLink->query("
+                        SELECT `Orders`.id,`Orders`.`profession_id`,`Orders`.`industry_id`,`Orders`.`name`,`Orders`.`description`,`Orders`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`)WHERE (`Orders`.industry_id=".$apiMethodParams->industry_id.")"); 
+                    $i=0;
+                    while ($obj = $result->fetch_object()) {
+                        $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
+                        $i++;
+                    }
+                    $retJSON=new Orders(false,$mass);
+                }catch(Exception $ex){
+                    $retJSON=new Orders(true,null);
+                }
+            }else{
+                if(isset($apiMethodParams->profession_id)){
+                    try{
+                        $mass=array();
+                        $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                        $result=$sql->mySQLWorker->connectLink->query("
+                            SELECT `Orders`.id,`Orders`.`profession_id`,`Orders`.`industry_id`,`Orders`.`name`,`Orders`.`description`,`Orders`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`)WHERE (`Orders`.profession_id=".$apiMethodParams->profession_id.")"); 
+                            $i=0;
+                        while ($obj = $result->fetch_object()) {
+                            $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
+                            $i++;
+                        }
+                        $retJSON=new Orders(false,$mass);
+                    }catch(Exception $ex){
+                        $retJSON=new Orders(true,null);
+                    }
+                }else{
+                    $retJSON=new Orders(true,null);
+                }
+
+            }
+            return $retJSON;
+        }
+
+        function getAdvert($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->industry_id)){
+                try{
+                    $mass=array();
+                    $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                    $result=$sql->mySQLWorker->connectLink->query("
+                        SELECT `Advert`.id,`Advert`.`profession_id`,`Advert`.`industry_id`,`Advert`.`name`,`Advert`.`description`,`Advert`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`)WHERE (`Advert`.industry_id=".$apiMethodParams->industry_id.")"); 
+                    $i=0;
+                    while ($obj = $result->fetch_object()) {
+                        $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
+                        $i++;
+                    }
+                    $retJSON=new Orders(false,$mass);
+                }catch(Exception $ex){
+                    $retJSON=new Orders(true,null);
+                }
+            }else{
+                if(isset($apiMethodParams->profession_id)){
+                    try{
+                        $mass=array();
+                        $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                        $result=$sql->mySQLWorker->connectLink->query("
+                            SELECT `Advert`.id,`Advert`.`profession_id`,`Advert`.`industry_id`,`Advert`.`name`,`Advert`.`description`,`Advert`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`)WHERE (`Advert`.profession_id=".$apiMethodParams->profession_id.")"); 
+                            $i=0;
+                        while ($obj = $result->fetch_object()) {
+                            $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
+                            $i++;
+                        }
+                        $retJSON=new Orders(false,$mass);
+                    }catch(Exception $ex){
+                        $retJSON=new Orders(true,null);
+                    }
+                }else{
+                    $retJSON=new Orders(true,null);
+                }
+
+            }
+            return $retJSON;
+        }
 
     }
 
