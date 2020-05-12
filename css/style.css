@@ -1,11 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-html,
-body {
-    height: 100%;
-}
 @font-face {
     font-family: 'Bahnschrift';
     src: url(../fonts/Bahnschrift.ttf) format("truetype");
@@ -35,6 +27,53 @@ html,body{
     box-sizing: border-box;
     min-width: 100%;
     font-size: 100%;
+}
+input{
+    padding-top:5px;
+    padding-bottom: 5px;
+}
+.reg_exec{
+    margin-left: 20%;
+    margin-top:10%;
+    background-image: url('../img/подложка\ регистрация.png');
+    width:60%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'busorama';
+    font-size: 1em;;
+}
+.reg{
+    margin-left: 20%;
+    margin-top:10%;
+    background-image: url('../img/подложка\ регистрация.png');
+    width:60%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'busorama';
+    font-size: 1em;;
+}
+.reg_exec ul li p{
+    width:32.5%;
+}
+.reg_exec ul li {
+    margin-bottom: 2%;
+}
+.reg_exec ul li input{
+    width:65%;
+}
+.reg ul,.reg_exec ul{
+    padding:5%;
+    padding-bottom: 8%;
+}
+.reg ul li{
+    margin-bottom: 2%;
+}
+.reg ul li input{
+    width:63%
+}
+.reg ul li p{
+    width:35%;
+    
 }
 p{
     margin:0;
