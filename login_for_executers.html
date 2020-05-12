@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Вход для исполнителей</title>
+	<link rel="stylesheet" href="css/style_for_reg.css" media="screen" type="text/css" />
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        function onCome(){
+            let ob={
+                login:document.getElementById("log").value,password:document.getElementById("pass").value
+            }
+            $.ajax({
+                type: 'GET',
+                url: "https://parstablephp.000webhostapp.com/PHP/?api.authentication="+JSON.stringify(ob),
+                success: function( result ) {
+                    var obj=JSON.parse(result);
+                    if(!obj.response.error){
+                        if(obj.response.typeUser==1){
+                            alert("Добро пожаловать "+obj.response.name+" "+obj.response.surname);
+                        }else{
+                            alert("Ошибка! Вы не заказчик");
+                        }  
+                    }else{
+                        alert(obj.response.message);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+
+    <div id="login">
+        <form action="javascript:void(0);" method="get">
+            <fieldset class="clearfix">
+                <p><span class="fontawesome-user"></span><input id='log' type="text" value="Логин" onBlur="if(this.value == '') this.value = 'Логин'" onFocus="if(this.value == 'Логин') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="Username" -->
+                <p><span class="fontawesome-lock"></span><input id='pass' type="password"  value="Пароль" onBlur="if(this.value == '') this.value = 'Пароль'" onFocus="if(this.value == 'Пароль') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="Password" -->
+                <p><input type="button" value="ВОЙТИ" onclick="onCome()"></p>
+            </fieldset>
+        </form>
+        <p>Нет аккаунта? &nbsp;&nbsp;<a href="#">Регистрация</a><span class="fontawesome-arrow-right"></span></p>
+    </div>
+</body>
+</html>
