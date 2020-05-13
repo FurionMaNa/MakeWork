@@ -83,16 +83,81 @@
         var $id;
         var $name;
         var $surname;
+        var $patronymic;
+        var $inn;
+        var $phone_num;
+        var $email;
+        var $industry;
+        var $professions;
+        var $sex;
+        var $age;
+        var $self_employment;
+        var $skills;
+        var $name_company;
+        var $legal_address;
+        var $fact_address;
+        var $city;
+        var $ogrn;
+        var $site;
         var $message;
 
-        function __construct($error,$typeUser,$id,$name,$surname,$message){
+        function __construct(
+        	$error,
+        	$typeUser,
+        	$id,
+        	$name,
+        	$surname,
+        	$patronymic,
+        	$inn,
+        	$phone_num,
+        	$email,
+        	$industry,
+        	$professions,
+        	$sex,
+        	$age,
+        	$self_employment,
+        	$skills,
+        	$name_company,
+        	$legal_address,
+        	$fact_address,
+        	$city,
+			$ogrn,
+			$site,
+			$message){
             $this->error=$error;
             $this->typeUser=$typeUser;
             $this->id=$id;
             $this->name=$name;
             $this->surname=$surname;
+			$this->patronymic=$patronymic;
+			$this->inn=$inn;
+			$this->phone_num=$phone_num;
+			$this->email=$email;
+			$this->industry=$industry;
+			$this->professions=$professions;
+			$this->sex=$sex;
+			$this->age=$age;
+			$this->self_employment=$self_employment;
+			$this->skills=$skills;
+			$this->name_company=$name_company;
+			$this->legal_address=$legal_address;
+			$this->fact_address=$fact_address;
+			$this->city=$city;
+			$this->ogrn=$ogrn;
+			$this->site=$site;
             $this->message=$message;
         }
+    }
+
+    class Message{
+
+    	var $error=false;
+    	var $message;
+
+    	function __constructor($error,$message){
+    		$this->error=$error;
+    		$this->message=$message;
+    	}
 
     }
 
@@ -100,34 +165,34 @@
     
         function authentication($apiMethodParams) {
             $retJSON = $this->createDefaultJson();
-            if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->login))){
-                $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->password))){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
                 $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE((login='".$apiMethodParams->login."')&&(password='".$apiMethodParams->password."'))");
                 if($result->num_rows==1){
                     $obj = $result->fetch_object();
-                    $retJSON=new User(false,$obj->TypeUser,$obj->id,$obj->Name,$obj->Surname,null);
+                    $retJSON=new User(false,$obj->TypeUser,$obj->id,$obj->Name,$obj->Surname,$obj->Patronymic,$obj->inn,$obj->phone_num,$obj->email,$obj->industry,$obj->professions,$obj->sex,$obj->age,$obj->self_employment,$obj->skills,$obj->name_company,$obj->legal_address,$obj->fact_address,$obj->city,$obj->ogrn,$obj->site,null);
                 }else{
-                    $retJSON=new User(true,null,null,null,null,"Неверный логин или пароль!");
+                    $retJSON=new User(true,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Неверный логин или пароль!");
                 }
             }else{
-                $retJSON=new User(true,null,null,null,null,"Указаны не все параметры");
+                $retJSON=new User(true,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,"Указаны не все параметры");
             }
             return $retJSON;
         }   
 
         function registration($apiMethodParams){
             $retJSON = $this->createDefaultJson();
-            if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->login))&&(isset($apiMethodParams->name))&&(isset($apiMethodParams->surname))&&(isset($apiMethodParams->typeUser))){
-                $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+            if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->password))&&(isset($apiMethodParams->name))&&(isset($apiMethodParams->surname))&&(isset($apiMethodParams->typeUser))){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                 $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE(login='".$apiMethodParams->login."')");
                 if($result->num_rows==0){
-                    $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Users`(`id`, `Name`, `Surname`, `Login`, `Password`, `TypeUser`) VALUES (null,'".$apiMethodParams->name."','".$apiMethodParams->surname."','".$apiMethodParams->login."','".$apiMethodParams->password."',".$apiMethodParams->typeUser.")");
-                    $retJSON=new User(false,null,null,null,null,"Пользователь зарегистрирован");
+                    $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Users`(`id`, `Name`, `Surname`, `Login`, `Password`, `TypeUser`, `Patronymic`, `inn`, `phone_num`, `email`, `industry`, `professions`, `sex`, `age`, `self_employment`, `skills`, `name_company`, `legal_address`, `fact_address`, `city`, `ogrn`, `site`) VALUES (null,'".$apiMethodParams->name."','".$apiMethodParams->surname."','".$apiMethodParams->login."','".$apiMethodParams->password."',".$apiMethodParams->typeUser.",".$apiMethodParams->patronymic.",".$apiMethodParams->inn.",".$apiMethodParams->phone_num.",".$apiMethodParams->email.",".$apiMethodParams->industry.",".$apiMethodParams->professions.",".$apiMethodParams->sex.",".$apiMethodParams->age.",".$apiMethodParams->self_employment.",".$apiMethodParams->skills.",".$apiMethodParams->name_company.",".$apiMethodParams->legal_address.",".$apiMethodParams->fact_address.",".$apiMethodParams->city.",".$apiMethodParams->ogrn.",".$apiMethodParams->site.")");
+                    $retJSON=new Message(false,"Пользователь зарегистрирован");
                 }else{
-                    $retJSON=new User(true,null,null,null,null,"Логин занят!");
+                    $retJSON=new Message(true,"Логин занят!");
                 }
             }else{
-                $retJSON=new User(true,null,null,null,null,"Указаны не все параметры");
+                $retJSON=new Message(true,"Указаны не все параметры");
             }
             return $retJSON;
         }
@@ -136,7 +201,7 @@
             $retJSON = $this->createDefaultJson();
             try{
                 $mass=array();
-                $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                 $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Industry"); 
                 $i=0;
                 while ($obj = $result->fetch_object()) {
@@ -156,7 +221,7 @@
             if(isset($apiMethodParams->id)){
                 try{
                     $mass=array();
-                    $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                     $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Professions WHERE (industry_id=".$apiMethodParams->id.")"); 
                     $i=0;
                     while ($obj = $result->fetch_object()) {
@@ -179,7 +244,7 @@
             if(isset($apiMethodParams->industry_id)){
                 try{
                     $mass=array();
-                    $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                     $result=$sql->mySQLWorker->connectLink->query("
                         SELECT `Orders`.id,`Orders`.`profession_id`,`Orders`.`industry_id`,`Orders`.`name`,`Orders`.`description`,`Orders`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`)WHERE (`Orders`.industry_id=".$apiMethodParams->industry_id.")"); 
                     $i=0;
@@ -195,7 +260,7 @@
                 if(isset($apiMethodParams->profession_id)){
                     try{
                         $mass=array();
-                        $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                		$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                         $result=$sql->mySQLWorker->connectLink->query("
                             SELECT `Orders`.id,`Orders`.`profession_id`,`Orders`.`industry_id`,`Orders`.`name`,`Orders`.`description`,`Orders`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`)WHERE (`Orders`.profession_id=".$apiMethodParams->profession_id.")"); 
                             $i=0;
@@ -220,7 +285,7 @@
             if(isset($apiMethodParams->industry_id)){
                 try{
                     $mass=array();
-                    $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                     $result=$sql->mySQLWorker->connectLink->query("
                         SELECT `Advert`.id,`Advert`.`profession_id`,`Advert`.`industry_id`,`Advert`.`name`,`Advert`.`description`,`Advert`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`)WHERE (`Advert`.industry_id=".$apiMethodParams->industry_id.")"); 
                     $i=0;
@@ -236,7 +301,7 @@
                 if(isset($apiMethodParams->profession_id)){
                     try{
                         $mass=array();
-                        $sql=new apiBaseClass("id12150653_makeworkbase","localhost","id12150653_mysql","&MS=$)zA07=J}dG2");
+                		$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                         $result=$sql->mySQLWorker->connectLink->query("
                             SELECT `Advert`.id,`Advert`.`profession_id`,`Advert`.`industry_id`,`Advert`.`name`,`Advert`.`description`,`Advert`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`)WHERE (`Advert`.profession_id=".$apiMethodParams->profession_id.")"); 
                             $i=0;

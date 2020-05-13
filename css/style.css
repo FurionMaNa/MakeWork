@@ -28,6 +28,33 @@ html,body{
     min-width: 100%;
     font-size: 100%;
 }
+.login_wh{
+    margin-left: 30%;
+    margin-top:10%;
+    background-image: url('../img/подложка\ регистрация.png');
+    width:40%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: 'busorama';
+    font-size: 1em;;
+}
+.autoriz:hover{
+    transition: 0.5s;
+text-decoration: underline;
+color:#e97d1d;
+}
+.login_wh ul{
+    padding:5%;}
+.login_wh ul li p{
+    position: relative;
+    top:5px;
+    width: 25%;
+    font-size: 150%;
+   
+}
+.login_wh ul li input{
+    width:70%;
+}
 input{
     padding-top:5px;
     padding-bottom: 5px;

@@ -4,35 +4,10 @@
     <meta charset="UTF-8">
     <title>Сайт</title>
     <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript">
-      
-      function onReg(){
-        let data={
-          surname:,
-          name:,
-          patronymic:,
-          inn:,
-          phone_num:,
-          email:,
-          industry:,
-          professions:,
-          sex:,
-          age:,
-          self_employment:,
-          skills:,
-          name_company:,
-          legal_address:,
-          fact_address:,
-          city:,
-          ogrn:,
-          site:
 
-        };  
-      }
-
-    </script>
 </head>
 <body>
+   
     <div class="main_head">
         <div  class="line">MAKEWORK</div> 
         <img src="img/logo.jpg" style="width:160px;vertical-align:middle;position: relative; top:-9px" alt="">
@@ -41,7 +16,7 @@
         <div class="change_city line" >
             <img src="img/zakaz.png" alt="" class="line" style="width: 10px;position:relative;top:5px">
             <div id="oblast" class="line">
-               <a href="#">Исполнитель</a> 
+               <a href="#">Заказчик</a> 
             </div>
         </div>
     <div class="register line">
@@ -52,22 +27,15 @@
         
     </div>
     </header>
-  <div class="reg_exec">
+  <div class="login_wh">
       <ul>
-          <li><input type="text" id="surname" class="line" placeholder="Фамилия" style="width:31%;margin-right: 1%;"><input type="text" id="name" placeholder="Имя" class="line" style="width:33%; margin-right: 1%;"><input type="text" id="patronymic" placeholder="Отчество"            class="line" style="width:31%"></li>
-          <li><p class="line">ИНН</p><input id="inn" type="text" class="line" ></li>
-          <li><p class="line">Номер телефона</p><input id="phone_num" placeholder="+7" type="text" class="line"></li>
-          <li><p class="line">e-mail</p><input id="e-mail" type="text" class="line"></li>
-          <li><p class="line">Интересующая сфера <br> выполнения работ</p><input id="surname" type="text" class="line"></li>
-          <li><p class="line">Желаемые области <br> выполнения работ</p><input type="text" class="line"></li>
-          <li><p class="line">Пол</p><input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Мужской <input type="radio"style="width:5%;" name="browser" value="женский" class="line"> Женский</li>
-          <li><p class="line">Возраст</p><input type="text" class="line"></li>
-          <li><p class="line">Вы зарегистрированы в <br> качестве самозанятого?</p><input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Да <input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Нет</li>
-          <li><p class="line" style="vertical-align: top;">Описание навыков</p><p class="line" style="width: 65%;"> <textarea style="resize: none;width:100%" rows="10" cols="45" name="text"></textarea></p></li>
-          <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
+     <li style="margin-bottom: 5%;"><p class="line">Логин</p><input type="text"> </li>
+     <li style="margin-bottom: 1%;" ><p class="line">Пароль</p><input type="text"></li>
+     <li style="margin-left: 80%;"><p class="autoriz">Войти</p></li>
       </ul>
    
   </div>
+
 <footer style="width:100%;"> 
     <div style="padding-top:45px ;display: inline-block;  width: 50%;vertical-align: top;">
     <div class="logname">
