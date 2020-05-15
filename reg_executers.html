@@ -4,30 +4,49 @@
     <meta charset="UTF-8">
     <title>Сайт</title>
     <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
       
       function onReg(){
         let data={
-          surname:,
-          name:,
-          patronymic:,
-          inn:,
-          phone_num:,
-          email:,
-          industry:,
-          professions:,
-          sex:,
-          age:,
-          self_employment:,
-          skills:,
-          name_company:,
-          legal_address:,
-          fact_address:,
-          city:,
-          ogrn:,
-          site:
+          surname:(document.getElementById('surname')==null||document.getElementById('surname').value==""?'null':document.getElementById('surname').value),
+          name:(document.getElementById('name')==null||document.getElementById('name').value==""?'null':document.getElementById('name').value),
+          patronymic:(document.getElementById('patronymic')==null||document.getElementById('patronymic').value==""?'null':document.getElementById('patronymic').value),
+          inn:(document.getElementById('inn')==null||document.getElementById('inn').value==""?'null':document.getElementById('inn').value),
+          phone_num:(document.getElementById('phone_num')==null||document.getElementById('phone_num').value==""?'null':document.getElementById('phone_num').value),
+          email:(document.getElementById('email')==null||document.getElementById('email').value==""?'null':document.getElementById('email').value),
+          industry:(document.getElementById('industry')==null||document.getElementById('industry').value==""?'null':document.getElementById('industry').value),
+          professions:(document.getElementById('professions')==null||document.getElementById('professions').value==""?'null':document.getElementById('professions').value),
+          sex:(document.getElementById('sex')==null?'null':(document.getElementsByName('sex')[0].checked?"0":"1")),
+          age:(document.getElementById('age')==null||document.getElementById('age').value==""?'null':document.getElementById('age').value),
+          self_employment:(document.getElementById('sam')==null?'null':(document.getElementsByName('sam')[0].checked?"0":"1")),
+          skills:(document.getElementById('skills')==null||document.getElementById('skills').value==""?'null':document.getElementById('skills').value),
+          name_company:(document.getElementById('name_company')==null||document.getElementById('name_company').value==""?'null':document.getElementById('name_company').value),
+          legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
+          fact_address:(document.getElementById('fact_address')==null||document.getElementById('fact_address').value==""?'null':document.getElementById('fact_address').value),
+          city:(document.getElementById('city')==null||document.getElementById('value').value==""?'null':document.getElementById('value').value),
+          ogrn:(document.getElementById('ogrn')==null||document.getElementById('ogrn').value==""?'null':document.getElementById('ogrn').value),
+          site:(document.getElementById('site')==null||document.getElementById('site').value==""?'null':document.getElementById('site').value),
+          typeUser:"0",
+          login:"null",
+          password:"null"
 
-        };  
+        }; 
+        $.ajax({
+          url: "/PHP/?api.registration="+JSON.stringify(data),
+          context: document.body
+        }).done(function(e) {
+          var answ=JSON.parse(e);
+          if(!answ.response.error){
+            alert(answ.response.message);
+            alert("Логин и пароль придёт к вам на почту после рассмотрения модераторами");
+          }else{
+            alert(answ.response.message);
+          }
+
+          
+        });
+        console.log("/PHP/?api.registration="+JSON.stringify(data));
       }
 
     </script>
@@ -46,7 +65,7 @@
         </div>
     <div class="register line">
         <div class="customer line " style="position: relative;top:10px;">
-            <a href="login_for_executers.html" class="line" style="position: relative;top:-5px;"> Регистрация</a>
+            <a href="login.html" class="line" style="position: relative;top:-5px;"> Вход</a>
             <img src="img/документы иконка.png" alt="" class="line" style="width: 35px;position:relative;top:-4px">
         </div>
         
@@ -58,12 +77,12 @@
           <li><p class="line">ИНН</p><input id="inn" type="text" class="line" ></li>
           <li><p class="line">Номер телефона</p><input id="phone_num" placeholder="+7" type="text" class="line"></li>
           <li><p class="line">e-mail</p><input id="e-mail" type="text" class="line"></li>
-          <li><p class="line">Интересующая сфера <br> выполнения работ</p><input id="surname" type="text" class="line"></li>
-          <li><p class="line">Желаемые области <br> выполнения работ</p><input type="text" class="line"></li>
-          <li><p class="line">Пол</p><input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Мужской <input type="radio"style="width:5%;" name="browser" value="женский" class="line"> Женский</li>
-          <li><p class="line">Возраст</p><input type="text" class="line"></li>
-          <li><p class="line">Вы зарегистрированы в <br> качестве самозанятого?</p><input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Да <input type="radio" name="pol" value="мужской" class="line" style="width:5%;"> Нет</li>
-          <li><p class="line" style="vertical-align: top;">Описание навыков</p><p class="line" style="width: 65%;"> <textarea style="resize: none;width:100%" rows="10" cols="45" name="text"></textarea></p></li>
+          <li><p class="line">Интересующая сфера <br> выполнения работ</p><input id="industry" type="text" class="line"></li>
+          <li><p class="line">Желаемые области <br> выполнения работ</p><input id="professions" type="text" class="line"></li>
+          <li><p class="line">Пол</p><input type="radio" id="sex" name="sex" value="0" class="line" style="width:5%;"checked="checked"> Мужской <input type="radio"style="width:5%;" id="sex" name="sex" value="1" class="line"> Женский</li>
+          <li><p class="line">Возраст</p><input id="age" type="text" class="line"></li>
+          <li><p class="line">Вы зарегистрированы в <br> качестве самозанятого?</p><input checked="checked" type="radio" name="sam" value="мужской" class="line" style="width:5%;"> Да <input type="radio" name="sam" value="мужской" class="line" style="width:5%;"> Нет</li>
+          <li><p class="line" style="vertical-align: top;">Описание навыков</p><p class="line" style="width: 65%;"> <textarea id="skills" style="resize: none;width:100%" rows="10" cols="45" name="text"></textarea></p></li>
           <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
       </ul>
    

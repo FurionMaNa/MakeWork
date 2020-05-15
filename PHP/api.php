@@ -1,4 +1,7 @@
 <?php
+	
+	ini_set('display_errors', 1);
+	error_reporting(E_ALL);
 
     class Orders{
         var $error=false;
@@ -154,7 +157,7 @@
     	var $error=false;
     	var $message;
 
-    	function __constructor($error,$message){
+    	function __construct($error,$message){
     		$this->error=$error;
     		$this->message=$message;
     	}
@@ -180,17 +183,24 @@
             return $retJSON;
         }   
 
+        private function strornull($s){
+        	if(($s!=NULL)&&($s!='NULL')){
+        		return "'".strval($s)."'";
+        	}
+        	return NULL;
+        }
+
         function registration($apiMethodParams){
             $retJSON = $this->createDefaultJson();
-            if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->password))&&(isset($apiMethodParams->name))&&(isset($apiMethodParams->surname))&&(isset($apiMethodParams->typeUser))){
+            if (($apiMethodParams->name!='null')&&($apiMethodParams->surname!='null')&&($apiMethodParams->typeUser!='null')){
                 $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
-                $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE(login='".$apiMethodParams->login."')");
-                if($result->num_rows==0){
-                    $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Users`(`id`, `Name`, `Surname`, `Login`, `Password`, `TypeUser`, `Patronymic`, `inn`, `phone_num`, `email`, `industry`, `professions`, `sex`, `age`, `self_employment`, `skills`, `name_company`, `legal_address`, `fact_address`, `city`, `ogrn`, `site`) VALUES (null,'".$apiMethodParams->name."','".$apiMethodParams->surname."','".$apiMethodParams->login."','".$apiMethodParams->password."',".$apiMethodParams->typeUser.",".$apiMethodParams->patronymic.",".$apiMethodParams->inn.",".$apiMethodParams->phone_num.",".$apiMethodParams->email.",".$apiMethodParams->industry.",".$apiMethodParams->professions.",".$apiMethodParams->sex.",".$apiMethodParams->age.",".$apiMethodParams->self_employment.",".$apiMethodParams->skills.",".$apiMethodParams->name_company.",".$apiMethodParams->legal_address.",".$apiMethodParams->fact_address.",".$apiMethodParams->city.",".$apiMethodParams->ogrn.",".$apiMethodParams->site.")");
+                //$result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE(login='".$apiMethodParams->login."')");
+                //if($result->num_rows==0){
+                    $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Users`(`id`, `Name`, `Surname`, `Login`, `Password`, `TypeUser`, `Patronymic`, `inn`, `phone_num`, `email`, `industry`, `professions`, `sex`, `age`, `self_employment`, `skills`, `name_company`, `legal_address`, `fact_address`, `city`, `ogrn`, `site`) VALUES (null,".$this->strornull($apiMethodParams->name).",".$this->strornull($apiMethodParams->surname).",".$this->strornull($apiMethodParams->login).",".$this->strornull($apiMethodParams->password).",".$apiMethodParams->typeUser.",".$this->strornull($apiMethodParams->patronymic).",".$this->strornull($apiMethodParams->inn).",".$this->strornull($apiMethodParams->phone_num).",".$this->strornull($apiMethodParams->email).",".$this->strornull($apiMethodParams->industry).",".$this->strornull($apiMethodParams->professions).",".$apiMethodParams->sex.",".$apiMethodParams->age.",".$this->strornull($apiMethodParams->self_employment).",".$this->strornull($apiMethodParams->skills).",".$this->strornull($apiMethodParams->name_company).",".$this->strornull($apiMethodParams->legal_address).",".$this->strornull($apiMethodParams->fact_address).",".$this->strornull($apiMethodParams->city).",".$this->strornull($apiMethodParams->ogrn).",".$this->strornull($apiMethodParams->site).")");
                     $retJSON=new Message(false,"Пользователь зарегистрирован");
-                }else{
-                    $retJSON=new Message(true,"Логин занят!");
-                }
+                //}else{
+                  //  $retJSON=new Message(true,"Логин занят!");
+                //}
             }else{
                 $retJSON=new Message(true,"Указаны не все параметры");
             }
