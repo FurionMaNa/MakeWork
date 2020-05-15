@@ -192,7 +192,7 @@
 
         function registration($apiMethodParams){
             $retJSON = $this->createDefaultJson();
-            if (($apiMethodParams->name!='null')&&($apiMethodParams->surname!='null')&&($apiMethodParams->typeUser!='null')){
+            if ((($apiMethodParams->name!='null')&&($apiMethodParams->surname!='null')&&($apiMethodParams->typeUser!='null'))||($apiMethodParams->name_company!='null')){
                 $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                 //$result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE(login='".$apiMethodParams->login."')");
                 //if($result->num_rows==0){

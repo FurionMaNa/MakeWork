@@ -4,7 +4,36 @@
     <meta charset="UTF-8">
     <title>Сайт</title>
     <link rel="stylesheet" href="css/style.css">
-
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        
+        function onAuthorization(){
+            var login=document.getElementById('log').value;
+            var password=document.getElementById('pas').value;
+            if((login!="")&&(password!="")){
+                if(password.length>=6){
+                    var data={
+                        login:login,
+                        password:password 
+                    };
+                    $.ajax({
+                        url: "/PHP/?api.authentication="+JSON.stringify(data),
+                    }).done(function(e) {
+                        var answ=JSON.parse(e);
+                        if(!answ.response.error){
+                          alert("Здравствуйте "+answ.response.name);
+                        }else{
+                          alert(answ.response.message);
+                        }
+                    });
+                }else{
+                    alert("Слишком короткий пароль!");
+                }
+            }else{
+                alert("Вы забыли указать логин или пароль!");
+            }
+        }
+    </script>
 </head>
 <body>
    
@@ -29,9 +58,9 @@
     </header>
   <div class="login_wh">
       <ul>
-     <li style="margin-bottom: 5%;"><p class="line">Логин</p><input type="text"> </li>
-     <li style="margin-bottom: 1%;" ><p class="line">Пароль</p><input type="text"></li>
-     <li style="margin-left: 80%;"><p class="autoriz">Войти</p></li>
+     <li style="margin-bottom: 5%;"><p class="line">Логин</p><input id="log" type="text"> </li>
+     <li style="margin-bottom: 1%;" ><p class="line">Пароль</p><input id="pas" type="password"></li>
+     <li style="margin-left: 80%;"><p onclick="onAuthorization()" class="autoriz">Войти</p></li>
       </ul>
    
   </div>

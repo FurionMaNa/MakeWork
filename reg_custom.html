@@ -4,7 +4,48 @@
     <meta charset="UTF-8">
     <title>Сайт</title>
     <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      
+      function onReg(){
+        let data={
+          surname:(document.getElementById('surname')==null||document.getElementById('surname').value==""?'null':document.getElementById('surname').value),
+          name:(document.getElementById('name')==null||document.getElementById('name').value==""?'null':document.getElementById('name').value),
+          patronymic:(document.getElementById('patronymic')==null||document.getElementById('patronymic').value==""?'null':document.getElementById('patronymic').value),
+          inn:(document.getElementById('inn')==null||document.getElementById('inn').value==""?'null':document.getElementById('inn').value),
+          phone_num:(document.getElementById('phone_num')==null||document.getElementById('phone_num').value==""?'null':document.getElementById('phone_num').value),
+          email:(document.getElementById('email')==null||document.getElementById('email').value==""?'null':document.getElementById('email').value),
+          industry:(document.getElementById('industry')==null||document.getElementById('industry').value==""?'null':document.getElementById('industry').value),
+          professions:(document.getElementById('professions')==null||document.getElementById('professions').value==""?'null':document.getElementById('professions').value),
+          sex:(document.getElementById('sex')==null?'null':(document.getElementsByName('sex')[0].checked?"0":"1")),
+          age:(document.getElementById('age')==null||document.getElementById('age').value==""?'null':document.getElementById('age').value),
+          self_employment:(document.getElementById('sam')==null?'null':(document.getElementsByName('sam')[0].checked?"0":"1")),
+          skills:(document.getElementById('skills')==null||document.getElementById('skills').value==""?'null':document.getElementById('skills').value),
+          name_company:(document.getElementById('name_company')==null||document.getElementById('name_company').value==""?'null':document.getElementById('name_company').value),
+          legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
+          fact_address:(document.getElementById('fact_address')==null||document.getElementById('fact_address').value==""?'null':document.getElementById('fact_address').value),
+          city:(document.getElementById('city')==null||document.getElementById('city').value==""?'null':document.getElementById('city').value),
+          ogrn:(document.getElementById('ogrn')==null||document.getElementById('ogrn').value==""?'null':document.getElementById('ogrn').value),
+          site:(document.getElementById('site')==null||document.getElementById('site').value==""?'null':document.getElementById('site').value),
+          typeUser:"1",
+          login:"null",
+          password:"null"
+        }; 
+        $.ajax({
+          url: "/PHP/?api.registration="+JSON.stringify(data)
+        }).done(function(e) {
+          var answ=JSON.parse(e);
+          if(!answ.response.error){
+            alert(answ.response.message);
+            alert("Логин и пароль придёт к вам на почту после рассмотрения модераторами");
+          }else{
+            alert(answ.response.message);
+          }
+        });
+        console.log("/PHP/?api.registration="+JSON.stringify(data));
+      }
 
+    </script>
 </head>
 <body>
     <div class="main_head">
@@ -20,7 +61,7 @@
         </div>
     <div class="register line">
         <div class="customer line " style="position: relative;top:10px;">
-            <a href="login_for_executers.html" class="line" style="position: relative;top:-5px;"> Регистрация</a>
+            <a href="login.html" class="line" style="position: relative;top:-5px;"> Вход</a><!--Я подумал, что так будет практичнее-->
             <img src="img/документы иконка.png" alt="" class="line" style="width: 35px;position:relative;top:-4px">
         </div>
         
@@ -28,17 +69,17 @@
     </header>
   <div class="reg">
       <ul>
-          <li><p class="line">Название компании</p><input type="text" class="line"></li>
-          <li><p class="line">Сфера деятельности</p><input type="text" class="line"></li>
-          <li><p class="line">ИНН</p><input type="text" class="line"></li>
-          <li><p class="line">ОГРН</p><input type="text" class="line"></li>
-          <li><p class="line">Юридический адрес</p><input type="text" class="line"></li>
-          <li><p class="line">Фактический адрес</p><input type="text" class="line"></li>
-          <li><p class="line">Сайт</p><input type="text" class="line"></li>
-          <li><p class="line">e-mail</p><input type="text" class="line"></li>
-          <li><p class="line">Телефон заказчика</p><input type="text" class="line"></li>
-          <li><p class="line">Области/Города <br> присутствия компании</p><input type="text" class="line"></li>
-          <img src="img/регистрация заказчика.png" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
+          <li><p class="line">Название компании</p><input id="name_company" type="text" class="line"></li>
+          <li><p class="line">Сфера деятельности</p><input id="industry" type="text" class="line"></li>
+          <li><p class="line">ИНН</p><input id="inn" type="text" class="line"></li>
+          <li><p class="line">ОГРН</p><input id="ogrn" type="text" class="line"></li>
+          <li><p class="line">Юридический адрес</p><input id="legal_address" type="text" class="line"></li>
+          <li><p class="line">Фактический адрес</p><input id="fact_address" type="text" class="line"></li>
+          <li><p class="line">Сайт</p><input id="site" type="text" class="line"></li>
+          <li><p class="line">e-mail</p><input id="email" type="text" class="line"></li>
+          <li><p class="line">Телефон заказчика</p><input id="phone_num" type="text" class="line"></li>
+          <li><p class="line">Области/Города <br> присутствия компании</p><input id="city" type="text" class="line"></li>
+          <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
       </ul>
    
   </div>
