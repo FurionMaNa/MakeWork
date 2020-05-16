@@ -20,8 +20,15 @@
                         url: "/PHP/?api.authentication="+JSON.stringify(data),
                     }).done(function(e) {
                         var answ=JSON.parse(e);
+                        document.cookie="data="+e;
                         if(!answ.response.error){
-                          alert("Здравствуйте "+answ.response.name);
+                            if(answ.response.typeUser==0){
+                                document.location.href = "cab_ispolnitel.html";
+                            }else{
+                                if(answ.response.typeUser==1){
+                                    document.location.href = "cab_zakazchick.html";
+                                }
+                            }
                         }else{
                           alert(answ.response.message);
                         }

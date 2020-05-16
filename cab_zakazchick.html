@@ -4,9 +4,27 @@
     <meta charset="UTF-8">
     <title>Сайт</title>
     <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      
+      function getCookie(name) {
+        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+          return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
 
+      function onLoad() {
+        if((getCookie("data")!=undefined)&&(getCookie("data")!="")){
+          var data=JSON.parse(getCookie("data"));
+          console.log(data);
+          document.getElementById('name_com').innerHTML=data.response.name_company;
+        }else{
+          alert("Включите поддержку cookie в вашем браузере!");
+        }
+      }
+
+    </script>
 </head>
-<body>
+<body onload="onLoad()">
    
     <div class="main_head">
         <div  class="line">MAKEWORK</div> 
@@ -27,7 +45,7 @@
         
     </div>
     </header>
-  <div style="width:30%;background-color: #e6e6e6;font-family: 'busorama';text-align: center;margin-left: 35%;margin-top: 5%;padding-top: 1%;padding-bottom: 1%;font-size: 120%;color:#e97d1d;">
+  <div id="name_com" style="width:30%;background-color: #e6e6e6;font-family: 'busorama';text-align: center;margin-left: 35%;margin-top: 5%;padding-top: 1%;padding-bottom: 1%;font-size: 120%;color:#e97d1d;">
       Название компании
   </div>
   <img src="img/tarifs.jpg" alt="" width="10%"style="position: absolute;color: #e97d1d;font-family: 'busorama';font-size: 1.5em;background:#fff;margin-left: 25.5%;margin-top: 10%;cursor:pointer">
