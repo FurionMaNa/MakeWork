@@ -152,6 +152,83 @@
         }
     }
 
+    class ArrayUser{
+    	var $error=false;
+    	var $userArr;
+    	var $message;
+        function __construct($error,$userArr,$message){
+            $this->error=$error;
+            $this->userArr=$userArr;
+            $this->message=$message;
+        }
+    }
+
+    class OneUser{
+        var $typeUser;
+        var $id;
+        var $name;
+        var $surname;
+        var $patronymic;
+        var $inn;
+        var $phone_num;
+        var $email;
+        var $industry;
+        var $professions;
+        var $sex;
+        var $age;
+        var $self_employment;
+        var $skills;
+        var $name_company;
+        var $legal_address;
+        var $fact_address;
+        var $city;
+        var $ogrn;
+        var $site;
+
+        function __construct(
+        	$typeUser,
+        	$id,
+        	$name,
+        	$surname,
+        	$patronymic,
+        	$inn,
+        	$phone_num,
+        	$email,
+        	$industry,
+        	$professions,
+        	$sex,
+        	$age,
+        	$self_employment,
+        	$skills,
+        	$name_company,
+        	$legal_address,
+        	$fact_address,
+        	$city,
+			$ogrn,
+			$site){
+            $this->typeUser=$typeUser;
+            $this->id=$id;
+            $this->name=$name;
+            $this->surname=$surname;
+			$this->patronymic=$patronymic;
+			$this->inn=$inn;
+			$this->phone_num=$phone_num;
+			$this->email=$email;
+			$this->industry=$industry;
+			$this->professions=$professions;
+			$this->sex=$sex;
+			$this->age=$age;
+			$this->self_employment=$self_employment;
+			$this->skills=$skills;
+			$this->name_company=$name_company;
+			$this->legal_address=$legal_address;
+			$this->fact_address=$fact_address;
+			$this->city=$city;
+			$this->ogrn=$ogrn;
+			$this->site=$site;
+        }
+    }
+
     class Message{
 
     	var $error=false;
@@ -183,11 +260,61 @@
             return $retJSON;
         }   
 
+        function getUserUnReg(){
+            $mass=array();
+            $i=0;
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE((login='null')&&(password='null'))");
+            if($result->num_rows>=1){
+                while ($obj = $result->fetch_object()) {
+                    $mass[$i]=new OneUser($obj->TypeUser,$obj->id,$obj->Name,$obj->Surname,$obj->Patronymic,$obj->inn,$obj->phone_num,$obj->email,$obj->industry,$obj->professions,$obj->sex,$obj->age,$obj->self_employment,$obj->skills,$obj->name_company,$obj->legal_address,$obj->fact_address,$obj->city,$obj->ogrn,$obj->site);
+                    $i++;
+                }
+            	$retJSON=new ArrayUser(false,$mass,null);
+        	}else{
+                $retJSON=new ArrayUser(true,null,"Нет пользователей ожидающих регистрации!");
+        	}
+            return $retJSON;
+        }
+
         private function strornull($s){
         	if(($s!=NULL)&&($s!='NULL')){
         		return "'".strval($s)."'";
         	}
         	return NULL;
+        }
+
+        function delUser($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->id)){
+            	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+            	try {
+            		$result=$sql->mySQLWorker->connectLink->query("DELETE FROM `Users` WHERE (`id`=".$apiMethodParams->id.")");
+            	} catch (Exception $e) {
+            		$retJSON=new Message(true,"Ошибка");
+            	}
+            	$retJSON=new Message(false,"Пользователь удалён");
+           	}else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+           	}
+            return $retJSON;
+        }
+
+        function regUser($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if((isset($apiMethodParams->id))&&(isset($apiMethodParams->login))&&(isset($apiMethodParams->password))){
+            	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+            	try {
+            		$result=$sql->mySQLWorker->connectLink->query("UPDATE `Users` SET `Login`='".$apiMethodParams->login."',`Password`='".$apiMethodParams->password."' WHERE(`id`=".$apiMethodParams->id.")");
+            	} catch (Exception $e) {
+            		$retJSON=new Message(true,"Ошибка");
+            	}
+            	$retJSON=new Message(false,"Пользователь зарегистрирован");
+            }else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+            }
+            return $retJSON;
         }
 
         function registration($apiMethodParams){

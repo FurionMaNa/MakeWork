@@ -6,46 +6,12 @@
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
-        
-        function onAuthorization(){
-            var login=document.getElementById('log').value;
-            var password=document.getElementById('pas').value;
-            if((login!="")&&(password!="")){
-                if(password.length>=6){
-                    var data={
-                        login:login,
-                        password:password 
-                    };
-                    $.ajax({
-                        url: "/PHP/?api.authentication="+JSON.stringify(data),
-                    }).done(function(e) {
-                        var answ=JSON.parse(e);
-                        document.cookie="data="+e;
-                        document.cookie="login="+login;
-                        document.cookie="password="+password;
-                        if(!answ.response.error){
-                            if(answ.response.typeUser==0){
-                                document.location.href = "cab_ispolnitel.html";
-                            }else{
-                                if(answ.response.typeUser==1){
-                                    document.location.href = "cab_zakazchick.html";
-                                }else{
-                                    if(answ.response.typeUser==2){
-                                        document.location.href = "moder_cab.html";
-                                    }
-                                }
-                            }
-                        }else{
-                          alert(answ.response.message);
-                        }
-                    });
-                }else{
-                    alert("Слишком короткий пароль!");
-                }
-            }else{
-                alert("Вы забыли указать логин или пароль!");
-            }
-        }
+      
+      function getCookie(name) {
+        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+          return matches ? decodeURIComponent(matches[1]) : undefined;
+      }
+
     </script>
 </head>
 <body>
@@ -58,24 +24,32 @@
         <div class="change_city line" >
             <img src="img/zakaz.png" alt="" class="line" style="width: 10px;position:relative;top:5px">
             <div id="oblast" class="line">
-               <a href="#">Заказчик</a> 
+              Модератор
             </div>
         </div>
     <div class="register line">
         <div class="customer line " style="position: relative;top:10px;">
-            <a href="login_for_executers.html" class="line" style="position: relative;top:-5px;"> Регистрация</a>
-            <img src="img/документы иконка.png" alt="" class="line" style="width: 35px;position:relative;top:-4px">
+            <span style="position: relative;top:-5px;"> Личный кабинет</span>
+            <img src="img/личн кабинет иконка.png" alt="" class="line" style="width: 25px;position:relative;">
         </div>
         
     </div>
     </header>
-  <div class="login_wh">
-      <ul>
-     <li style="margin-bottom: 5%;"><p class="line">Логин</p><input id="log" type="text"> </li>
-     <li style="margin-bottom: 1%;" ><p class="line">Пароль</p><input id="pas" type="password"></li>
-     <li style="margin-left: 80%;"><p onclick="onAuthorization()" class="autoriz">Войти</p></li>
-      </ul>
-   
+  <div style="width:30%;background-color: #e6e6e6;font-family: 'busorama';text-align: center;margin-left: 35%;margin-top: 5%;padding-top: 1%;padding-bottom: 1%;font-size: 120%;color:#e97d1d;">
+      Модератор
+  </div>
+ 
+  <img src="img/moder_zav.jpg" onclick="document.location.href = 'RegistrationApplications.html';" alt="" width="10%"style="position: absolute;color: #e97d1d;font-family: 'busorama';font-size: 1.5em;background:#fff;margin-left: 45.8%;margin-top: 11.5%;cursor:pointer">
+  
+  <div style="width: 70%;margin-left: 12%;margin-top: 5%;">
+      <img src="img/тарифы.jpg" alt="" width="20%;" style="opacity:0;margin-left: 12%;margin-right: 8%;">
+      <img src="img/заполнить договор.png" alt="" width="30%;" style="margin-right: 8%;">
+      <img src="img/моя команда.jpg" alt="" width="20%;" style="opacity: 0;">
+  </div>
+  <div style="width:30%;margin-left: 40%;margin-top: 5%;">
+      <img style="display: block;width: 70%;cursor: pointer;" src="img/message.jpg" alt="">
+      <img style="display: block;margin-left: 25%;width:20%;padding-top:10%;padding-bottom: 10%;" src="img/квадратики.jpg" alt="">
+      <img style="display: block;width:70%;cursor: pointer;" src="img/выбрать заказ.jpg" alt="">
   </div>
 
 <footer style="width:100%;"> 
