@@ -290,7 +290,17 @@
             if(isset($apiMethodParams->id)){
             	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
             	try {
+            		$result=$sql->mySQLWorker->connectLink->query("SELECT `email` FROM `Users` WHERE(`id`=".$apiMethodParams->id.")");
+            		$obj = $result->fetch_object();
             		$result=$sql->mySQLWorker->connectLink->query("DELETE FROM `Users` WHERE (`id`=".$apiMethodParams->id.")");
+            		$root = $_SERVER['DOCUMENT_ROOT'];
+            		require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+  					$mail = new PHPMailer;
+  					$mail->addAddress($obj->email);//Почту менять ТУТ 
+  					$mail->CharSet = "utf-8";
+  					$mail->Subject = 'MakeWork';
+  					$mail->msgHTML("От: сайта MakeWork <br> К сожалению вам отказано в регистрации.");
+  					$r = $mail->send();
             	} catch (Exception $e) {
             		$retJSON=new Message(true,"Ошибка");
             	}
@@ -310,6 +320,16 @@
             	} catch (Exception $e) {
             		$retJSON=new Message(true,"Ошибка");
             	}
+            	$result=$sql->mySQLWorker->connectLink->query("SELECT `email` FROM `Users` WHERE(`id`=".$apiMethodParams->id.")");
+            	$obj = $result->fetch_object();
+  				$root = $_SERVER['DOCUMENT_ROOT'];
+            	require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+  				$mail = new PHPMailer;
+  				$mail->addAddress($obj->email);//Почту менять ТУТ 
+  				$mail->CharSet = "utf-8";
+  				$mail->Subject = 'MakeWork';
+  				$mail->msgHTML("От: сайта MakeWork <br> Ваша заявка на регистрацию успешно рассмотрена!!!<br>  Ваш логин : ".$apiMethodParams->login."<br>  Ваш пароль : ".$apiMethodParams->password);
+  				$r = $mail->send();
             	$retJSON=new Message(false,"Пользователь зарегистрирован");
             }else{
                 $retJSON=new Message(true,"Указаны не все параметры");
@@ -319,7 +339,7 @@
 
         function registration($apiMethodParams){
             $retJSON = $this->createDefaultJson();
-            if ((($apiMethodParams->name!='null')&&($apiMethodParams->surname!='null')&&($apiMethodParams->typeUser!='null'))||($apiMethodParams->name_company!='null')){
+            if (((($apiMethodParams->name!='null')&&($apiMethodParams->surname!='null')&&($apiMethodParams->typeUser!='null'))||($apiMethodParams->name_company!='null'))&&($apiMethodParams->email!='null')){
                 $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
                 //$result=$sql->mySQLWorker->connectLink->query("SELECT * FROM Users WHERE(login='".$apiMethodParams->login."')");
                 //if($result->num_rows==0){
