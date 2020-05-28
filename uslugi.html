@@ -6,10 +6,146 @@
     <link rel="stylesheet" href="css/style.css">
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
+        
+        function load(){
+            $.ajax({
+                url: "/PHP/?api.getIndustry={}",
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                var answs=JSON.parse(e);
+                if(!answ.response.error){
+                    for(var i=0;i<answ.response.industry.length;i++){
+                        $("#industry").append("<option value='"+answ.response.industry[i].id+"'>"+answ.response.industry[i].name+"</option>");
+                        if(i==0){
+                            $.ajax({
+                                url: "/PHP/?api.getProfessions="+JSON.stringify({
+                                    id:answ.response.industry[i].id
+                                }),
+                            }).done(function(e) {
+                                var answ=JSON.parse(e);
+                                if(!answ.response.error){
+                                    $("#profession").empty();
+                                    for(var i=0;i<answ.response.professions.length;i++){
+                                        $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
+                                        if(i==0){
+                                            $.ajax({
+                                                url: "/PHP/?api.getAdvert="+JSON.stringify({
+                                                    profession_id:answ.response.professions[i].id
+                                                }),
+                                            }).done(function(e) {
+                                                var answ=JSON.parse(e);
+                                                $("#list").empty();
+                                                $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                                                if(!answ.response.error){
+                                                    for(var i=0;i<answ.response.orders.length;i++){
+                                                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                                                    }
+                                                }else{
+                                                    alert("Нет вакансий");
+                                                }
+                                            });
+                                        }
+                                    }
+                                }else{
+                                    $.ajax({
+                                        url: "/PHP/?api.getAdvert="+JSON.stringify({
+                                            industry_id:answs.response.industry[0].id
+                                        }),
+                                    }).done(function(e) {
+                                        var answ=JSON.parse(e);
+                                        $("#list").empty();
+                                        $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                                        if(!answ.response.error){
+                                            for(var i=0;i<answ.response.orders.length;i++){
+                                                $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                                            }
+                                        }else{
+                                            alert("Нет вакансий");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }else{
+                    alert("Проблема решается!");
+                }
+            });
+        }
+
+        function industryChange(){
+            $.ajax({
+                url: "/PHP/?api.getProfessions="+JSON.stringify({
+                    id:document.getElementById('industry').value
+                }),
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                if(!answ.response.error){
+                    $("#profession").empty();
+                    for(var i=0;i<answ.response.professions.length;i++){
+                        $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
+                        if(i==0){
+                            $.ajax({
+                                url: "/PHP/?api.getAdvert="+JSON.stringify({
+                                    profession_id:answ.response.professions[i].id
+                                }),
+                            }).done(function(e) {
+                                var answ=JSON.parse(e);
+                                $("#list").empty();
+                                $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                                if(!answ.response.error){
+                                    for(var i=0;i<answ.response.orders.length;i++){
+                                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                                    }
+                                }else{
+                                    alert("Нет вакансий");
+                                }
+                            });
+                        } 
+                    }
+                }else{
+                    $.ajax({
+                        url: "/PHP/?api.getAdvert="+JSON.stringify({
+                            industry_id:document.getElementById('industry').value
+                        }),
+                    }).done(function(e) {
+                        var answ=JSON.parse(e);
+                        $("#list").empty();
+                        $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                        if(!answ.response.error){
+                            for(var i=0;i<answ.response.orders.length;i++){
+                                $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                            }
+                        }else{
+                            alert("Нет вакансий");
+                        }
+                    });
+                }
+            });                                             
+        }
+
+        function professionsChange(){
+            $.ajax({
+                url: "/PHP/?api.getAdvert="+JSON.stringify({
+                    profession_id:document.getElementById('profession').value
+                }),
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                $("#list").empty();
+                $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                if(!answ.response.error){
+                    for(var i=0;i<answ.response.orders.length;i++){
+                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                    }
+                }else{
+                    alert("Нет вакансий");
+                }
+            });
+        }
 
     </script>
 </head>
-<body>
+<body onload="load()">
    
     <div class="main_head">
         <div  class="line">MAKEWORK</div> 
@@ -32,37 +168,21 @@
     </header>
     <li>
         <p class="line">Интересующая сфера <br> выполнения работ</p>
-        <select id="industry" multiple required style="vertical-align: top;"class="line">
+        <select id="industry" onchange="industryChange()" required style="vertical-align: top;"class="line">
         </select>
     </li>
     <li>
         <p class="line">Желаемые области <br> выполнения работ</p>
-        <select required style="vertical-align: top;"class="line">
-            <option>Рыбинск</option>
-            <option>Производство</option>
-            <option>Общепит</option>
-            <option>Розница и сети</option>
+        <select id="profession" onchange="professionsChange()" required style="vertical-align: top;"class="line">
         </select>
     </li>
-    <table style="margin-left: 20%;width:60%;margin-top: 5%;">
+    <table id="list" style="margin-left: 20%;width:60%;margin-top: 5%;">
         <tr>
-          <th colspan="2">Исполнитель</th>
+          <th colspan='2'>Исполнитель</th>
           <th>Анкетные данные</th>
           <th>Выбрать в команду</th>
         </tr>
-        <tr>
-          <td width="10%"><img src="https://html5book.ru/wp-content/uploads/2015/04/dress-2.png"></td>
-          <td width="15%">Егор Крид</td>
-          <td width="65%">Самый крутой рэпер</td>
-          <td width="10%">+</td>
-        </tr>
-        <tr>
-          <td><img src="https://html5book.ru/wp-content/uploads/2015/04/dress-3.png"></td>
-          <td>Тиль Линдельман</td>
-          <td>Выстпает за лгбт</td>
-          <td>+</td>
-        </tr>
-        </table>
+    </table>
 
 <footer style="width:100%;"> 
     <div style="padding-top:45px ;display: inline-block;  width: 50%;vertical-align: top;">
