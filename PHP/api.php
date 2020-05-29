@@ -315,22 +315,27 @@
             $retJSON = $this->createDefaultJson();
             if((isset($apiMethodParams->id))&&(isset($apiMethodParams->login))&&(isset($apiMethodParams->password))){
             	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
-            	try {
-            		$result=$sql->mySQLWorker->connectLink->query("UPDATE `Users` SET `Login`='".$apiMethodParams->login."',`Password`='".$apiMethodParams->password."' WHERE(`id`=".$apiMethodParams->id.")");
-            	} catch (Exception $e) {
-            		$retJSON=new Message(true,"Ошибка");
+            	$result=$sql->mySQLWorker->connectLink->query("SELECT `Login` FROM `Users` WHERE (`Login`='".$apiMethodParams->login."')");
+            	if($result->num_rows==0){
+            		try {
+            			$result=$sql->mySQLWorker->connectLink->query("UPDATE `Users` SET `Login`='".$apiMethodParams->login."',`Password`='".$apiMethodParams->password."' WHERE(`id`=".$apiMethodParams->id.")");
+            		} catch (Exception $e) {
+            			$retJSON=new Message(true,"Ошибка");
+            		}
+            		$result=$sql->mySQLWorker->connectLink->query("SELECT `email` FROM `Users` WHERE(`id`=".$apiMethodParams->id.")");
+            		$obj = $result->fetch_object();
+  					$root = $_SERVER['DOCUMENT_ROOT'];
+            		require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+  					$mail = new PHPMailer;
+  					$mail->addAddress($obj->email);//Почту менять ТУТ 
+  					$mail->CharSet = "utf-8";
+  					$mail->Subject = 'MakeWork';
+  					$mail->msgHTML("От: сайта MakeWork <br> Ваша заявка на регистрацию успешно рассмотрена!!!<br>  Ваш логин : ".$apiMethodParams->login."<br>  Ваш пароль : ".$apiMethodParams->password);
+  					$r = $mail->send();
+            		$retJSON=new Message(false,"Пользователь зарегистрирован");
+            	}else{
+                	$retJSON=new Message(true,"Такой логин уже существует!");
             	}
-            	$result=$sql->mySQLWorker->connectLink->query("SELECT `email` FROM `Users` WHERE(`id`=".$apiMethodParams->id.")");
-            	$obj = $result->fetch_object();
-  				$root = $_SERVER['DOCUMENT_ROOT'];
-            	require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
-  				$mail = new PHPMailer;
-  				$mail->addAddress($obj->email);//Почту менять ТУТ 
-  				$mail->CharSet = "utf-8";
-  				$mail->Subject = 'MakeWork';
-  				$mail->msgHTML("От: сайта MakeWork <br> Ваша заявка на регистрацию успешно рассмотрена!!!<br>  Ваш логин : ".$apiMethodParams->login."<br>  Ваш пароль : ".$apiMethodParams->password);
-  				$r = $mail->send();
-            	$retJSON=new Message(false,"Пользователь зарегистрирован");
             }else{
                 $retJSON=new Message(true,"Указаны не все параметры");
             }
