@@ -56,8 +56,8 @@
             }).done(function(e) {
               var answ=JSON.parse(e);
               if(!answ.response.error){
-                alert(answ.response.message);
                 load();
+                alert(answ.response.message);
               }else{
                 alert(answ.response.message);
               }
