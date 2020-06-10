@@ -113,6 +113,9 @@ input{
     font-family: 'busorama';
     font-size: 1em;;
 }
+li{
+    list-style-type: none;
+}
 .reg_exec ul li p{
     width:32.5%;
 }
