@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Сайт</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+      
+    function getCookie(name) {
+        var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+          return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    function load(){
+            $.ajax({
+                url: "/PHP/?api.getRegion={}",
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                var answs=JSON.parse(e);
+                if(!answ.response.error){
+                    for(var i=0;i<answ.response.arrayRegion.length;i++){
+                        $("#region").append("<option value='"+answ.response.arrayRegion[i].idRegion+"'>"+answ.response.arrayRegion[i].name+"</option>");
+                        if(i==0){
+                                console.log("/PHP/?api.getCity="+JSON.stringify({
+                                    id:answ.response.arrayRegion[i].idRegion
+                                }));
+                            $.ajax({
+                                url: "/PHP/?api.getCity="+JSON.stringify({
+                                    id:answ.response.arrayRegion[i].idRegion
+                                }),
+                            }).done(function(e) {
+                                var answ=JSON.parse(e);
+                                if(!answ.response.error){
+                                    $("#city").empty();
+                                    for(var i=0;i<answ.response.arrayCity.length;i++){
+                                        $("#city").append("<option value='"+answ.response.arrayCity[i].idCity+"'>"+answ.response.arrayCity[i].name+"</option>");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }else{
+                    alert("Проблема решается!");
+                }
+            });
+        }
+
+        function regionChange(){
+            $.ajax({
+                url: "/PHP/?api.getCity="+JSON.stringify({
+                    id:document.getElementById('region').value
+                }),
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                if(!answ.response.error){
+                    $("#city").empty();
+                    for(var i=0;i<answ.response.arrayCity.length;i++){
+                        $("#city").append("<option value='"+answ.response.arrayCity[i].idCity+"'>"+answ.response.arrayCity[i].name+"</option>");
+                    }
+                }
+            });                                             
+        }
+
+        
+    </script>
+</head>
+<body onload="load()">
+   
+    <div class="main_head">
+        <div  class="line">MAKEWORK</div> 
+        <img src="img/logo.jpg" style="width:160px;vertical-align:middle;position: relative; top:-9px" alt="">
+    </div>
+    <header>
+        <div class="change_city line" >
+            <img src="img/zakaz.png" alt="" class="line" style="width: 10px;position:relative;top:5px">
+            <div id="oblast" class="line">
+              Заказчик
+            </div>
+        </div>
+    <div class="register line">
+        <div class="customer line " style="position: relative;top:10px;">
+            <span style="position: relative;top:-5px;"> Личный кабинет</span>
+            <img src="img/личн кабинет иконка.png" alt="" class="line" style="width: 25px;position:relative;">
+        </div>
+        
+    </div>
+    </header>
+    <div style="width:30%;background-color: #e6e6e6;font-family: 'busorama';text-align: center;margin-left: 35%;margin-top: 5%;padding-top: 1%;padding-bottom: 1%;font-size: 120%;color:#e97d1d;">
+       создать заказ
+    </div>
+    <div class="reg">
+        <ul>
+            <li><p class="line">Сфера выполнения работ</p> Производство <input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
+                Логистика <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
+               Общепит  <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+               Розница и сети <input type="radio" name="ship" value="Корабль" style="width:4%;" class="line" ></li>
+            <li><p class="line">Наименование услуги</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Адрес проведения работ:</p></li>
+            <li><p class="line">Область</p><Select onchange="regionChange()" id="region" class="line"></Select></li>
+            <li><p class="line">Город</p><Select  id="city" class="line"></Select></li>
+            <li><p class="line">Точный адрес</p><input id="legal_address" type="text" class="line"></li>
+            <li><p class="line">Дата начала работ</p><input type="date" class="line"></li>
+            <li><p class="line">Предполагаемая дата окончания работ</p><input type="date" class="line"></li>
+            <li><p class="line">Общий обьем услуг, которые надо выполнить в это время</p><input id="email" type="text" class="line"></li>
+            <li><p class="line">Количество исполнителей</p><input id="phone_num" type="text" class="line"></li>
+            <li><p class="line">Общее количество часов работ</p><input id="city" type="text" class="line"></li>
+            <li><p class="line">Требования к исполнителям:</li>
+            <li><p class="line">Пол</p><input type="radio" id="sex" name="sex" value="0" class="line" style="width:5%;"checked="checked"> Мужской <input type="radio"style="width:5%;" id="sex" name="sex" value="1" class="line"> Женский</li>
+                
+            <li><p class="line">Возраст</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Гражданство</p>
+                 Рф <input type="checkbox" name="airplane" value="Самолет"  style="width:5%;" class="line">
+                 Гр. таможенного союза <input type="checkbox" name="car" value="Автомобиль"  style="width:5%;" class="line" >
+                  Гр. СНГ  <input type="checkbox" name="train" value="Поезд"  style="width:5%;" class="line">
+                  Любое  <input type="checkbox" name="ship" value="Корабль" style="width:5%;" class="line" ></li>
+            <li><p class="line">Наличие медицинской книжки</p>
+                Требуется<input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
+                Не требуется <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
+               Помогаем с оформлением <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+               </li>
+            <li><p class="line">Наличие прав</p>
+                Да<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
+                Нет <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Наличие иной разрешительной документации</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Налие опыта оказания услуг</p>
+                Обязательно<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
+                Необязательно<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Обучение на месте оказания услуг</p>
+                Есть<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
+               Нет<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                  Не требуется<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Желаемый график оказания услуг</p>2/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+              4/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+               5/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                 6/1<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                свободный<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                любой<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Желаемое время оказания услуг</p>
+                День <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Ночь<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Форма исполнителя</p>
+                Должна быть своя <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Готовы предоставить <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Не требуется <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+            </li>
+            <li><p class="line">Предоставления жилья иногородним</p>
+                бесплатно <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+               с вычетом из суммы вознагрождения <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+            </li>
+            <li><p class="line" style="vertical-align: top;">Описание задач исполнителей</p><textarea class="line" style="width:63%;resize: none;">
+                
+              </textarea></li>
+            <li><p class="line" style="vertical-align: top;">дополнительная информация по заказу</p><textarea class="line" style="width:63%;resize: none;">
+               
+              </textarea></li>
+              <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
+        </ul>
+     
+    </div>
+<footer style="width:100%;"> 
+    <div style="padding-top:45px ;display: inline-block;  width: 50%;vertical-align: top;">
+    <div class="logname">
+        <span>MAKE WORK</span>
+        <img src="img/logo.png" width="10%" alt="" style="position: relative;top:15px">
+    </div>
+    <div style="margin-left: 27%; margin-top: 2%;">
+        <span style="color:#3a3939">
+            Мы в соц.сетях
+        </span>
+        <div style="margin-top: 8px;">
+        <img src="img/вк.png"width="6%" style="cursor: pointer;"alt="">
+        <img src="img/фейсбук.png"width="5.8%" style="margin-left: 5px;cursor: pointer;"alt="">
+    </div>
+    </div>
+</div>
+<div class="line" style="padding-top: 45px;">
+    <ul class="line" >
+        <li><a href="#">Контакты</a><img src="img/контакты иконка.png" style="width:25px;margin-left: 10px;"alt=""></li>
+        <li><a href="#">Вакансии</a><img src="img/вакансии иконка.png" alt=""style="width:25px;margin-left: 10px;"></li>
+        <li><a href="#">О компании</a><img src="img/о компании иконка.png" alt=""style="width:20px;margin-left: 10px;"></li>
+        
+        <li><a href="#">Документы</a><img src="img/документы иконка.png" alt=""style="width:25px;margin-left: 10px;"></li>
+    </ul>
+    <ul class="line" style="vertical-align: top;">
+        
+        <li><a href="#">Договора</a><img src="img/договора иконка.png" alt=""style="width:15px;margin-left: 10px;"></li>
+        <li><a href="#">Акты</a><img src="img/акты иконка.png" alt=""style="width:18px;margin-left: 10px;"></li>
+        <li ><a href="#">Анкеты</a><img src="img/анкеты иконка.png" alt=""style="width:15px;margin-left: 10px;"></li>
+    </ul>
+   
+</div>
+
+</footer>
+
+</body>
+</html>

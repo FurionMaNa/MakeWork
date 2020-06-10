@@ -163,6 +163,47 @@
         }
     }
 
+    class ArrayRegion{
+        var $error=false;
+        var $arrayRegion;
+        var $message;
+        function __construct($error,$arrayRegion,$message){
+            $this->error=$error;
+            $this->arrayRegion=$arrayRegion;
+            $this->message=$message;
+        }
+    }
+
+    class Region{
+        var $idRegion;
+        var $name;
+        function __construct($idRegion,$name){
+            $this->idRegion=$idRegion;
+            $this->name=$name;
+        }
+    }
+
+
+    class ArrayCity{
+        var $error=false;
+        var $arrayCity;
+        var $message;
+        function __construct($error,$arrayCity,$message){
+            $this->error=$error;
+            $this->arrayCity=$arrayCity;
+            $this->message=$message;
+        }
+    }
+
+    class City{
+        var $idCity;
+        var $name;
+        function __construct($idCity,$name){
+            $this->idCity=$idCity;
+            $this->name=$name;
+        }
+    }
+
     class OneUser{
         var $typeUser;
         var $id;
@@ -243,6 +284,37 @@
 
     class api extends apiBaseClass {
     
+        function getRegion(){
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            $result=$sql->mySQLWorker->connectLink->query("SELECT `id`,`name` FROM `region` WHERE(`country_id` =0)");
+            $i=0;
+            while ($obj = $result->fetch_object()) {
+                $mass[$i]=new Region($obj->id,$obj->name);
+                $i++;
+            }
+            $retJSON=new ArrayRegion(false,$mass,null);
+            
+            return $retJSON;
+        }
+
+        function getCity($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if (isset($apiMethodParams->id)){
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            $result=$sql->mySQLWorker->connectLink->query("SELECT * FROM `city` WHERE(`region_id` =".$apiMethodParams->id.")");
+            $i=0;
+            while ($obj = $result->fetch_object()) {
+                $mass[$i]=new City($obj->id,$obj->name);
+                $i++;
+            }
+            $retJSON=new ArrayCity(false,$mass,null);
+            }else{
+
+            }
+            return $retJSON;
+        }
+
         function authentication($apiMethodParams) {
             $retJSON = $this->createDefaultJson();
             if ((isset($apiMethodParams->login))&&(isset($apiMethodParams->password))){
