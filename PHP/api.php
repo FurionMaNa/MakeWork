@@ -431,6 +431,15 @@
             return $retJSON;
         }
 
+        function createOrder($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+            
+            $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Orders`(`id`, `name`, `description`, `user_id`, `industry_id`, `region_id`, `city_id`, `address`, `start_data`, `end_data`, `scope_of_services`, `count_worker`, `count_hour`, `sex`, `age`, `citizenship`, `med_book`, `driver_license`, `other_right`, `experience`, `training`, `schedule`, `shift_nd`, `form`, `housing`, `many_description`, `approved`) VALUES (null,".$this->strornull($apiMethodParams->name).",".$this->strornull($apiMethodParams->description).",".$apiMethodParams->user_id.",".$apiMethodParams->industry.",".$apiMethodParams->region.",".$apiMethodParams->city.",".$this->strornull($apiMethodParams->legal_address).",".$this->strornull($apiMethodParams->start_date).",".$this->strornull($apiMethodParams->end_date).",".$this->strornull($apiMethodParams->scope_of_services).",".$apiMethodParams->count_worker.",".$apiMethodParams->count_hour.",".$apiMethodParams->sex.",".$apiMethodParams->age.",".$this->strornull($apiMethodParams->citizenship).",".$apiMethodParams->med_book.",".$apiMethodParams->driver_license.",".$this->strornull($apiMethodParams->other_right).",".$apiMethodParams->experience.",".$apiMethodParams->training.",".$apiMethodParams->schedule.",".$apiMethodParams->shift_nd.",".$apiMethodParams->form.",".$apiMethodParams->housing.",".$this->strornull($apiMethodParams->many_description).",0)");
+            $retJSON=new Message(false,"");
+            return $retJSON;
+        }
+
         function getIndustry(){
             $retJSON = $this->createDefaultJson();
             try{

@@ -23,12 +23,25 @@
         return JSON.stringify(checkboxesChecked);
     }
 
+    function getRadioBtn(name){
+        var rb=document.getElementsByName(name);
+        for (var index = 0; index < rb.length; index++) {
+            if (rb[index].checked) {
+                return rb[index].value;
+            }
+        }
+    }
+
+    function jsonEscape(str)  {
+        return str.replace(/\\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+    }
+
     function onReg(){
-        var cookie=JSON.parse(getCookie(data)); 
-        let data={
+        var cookie=JSON.parse(getCookie('data')); 
+        var data={
           name:(document.getElementById('name')==null||document.getElementById('name').value==""?'null':document.getElementById('name').value),
           description:(document.getElementById('description')==null||document.getElementById('description').value==""?'null':document.getElementById('description').value),
-          user_id:(cookie!=undefined?function(){alert('Вы не авторизовались!');document.location.href = "login.html";}:cookie.response.id),
+          user_id:(cookie==undefined?function(){alert('Вы не авторизовались!');document.location.href = "login.html";}:cookie.response.id),
           region:document.getElementById('region').value,
           city:document.getElementById('city').value,
           legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
@@ -39,18 +52,36 @@
           count_hour:(document.getElementById('count_hour')==null||document.getElementById('count_hour').value==""?'null':document.getElementById('count_hour').value),
           sex:(document.getElementById('sex')==null?'null':(document.getElementsByName('sex')[0].checked?"0":"1")),
           age:(document.getElementById('age')==null||document.getElementById('age').value==""?'null':document.getElementById('age').value),
-          self_employment:(document.getElementById('sam')==null?'null':(document.getElementsByName('sam')[0].checked?"0":"1")),
-          skills:(document.getElementById('skills')==null||document.getElementById('skills').value==""?'null':document.getElementById('skills').value),
-          name_company:(document.getElementById('name_company')==null||document.getElementById('name_company').value==""?'null':document.getElementById('name_company').value),
-          legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
-          fact_address:(document.getElementById('fact_address')==null||document.getElementById('fact_address').value==""?'null':document.getElementById('fact_address').value),
-          city:(document.getElementById('city')==null||document.getElementById('city').value==""?'null':document.getElementById('city').value),
-          ogrn:(document.getElementById('ogrn')==null||document.getElementById('ogrn').value==""?'null':document.getElementById('ogrn').value),
-          site:(document.getElementById('site')==null||document.getElementById('site').value==""?'null':document.getElementById('site').value),
-          typeUser:"1",
-          login:"null",
-          password:"null"
+          citizenship:getCitizenship(),
+          med_book:getRadioBtn('med_book'),
+          industry:getRadioBtn('industry'),
+          driver_license:(document.getElementById('driver_license')==null?'null':(document.getElementsByName('driver_license')[0].checked?"0":"1")),
+          other_right:(document.getElementById('other_right')==null||document.getElementById('other_right').value==""?'null':document.getElementById('other_right').value),
+          experience:(document.getElementById('experience')==null?'null':(document.getElementsByName('experience')[0].checked?"0":"1")),
+          training:getRadioBtn('training'),
+          schedule:getRadioBtn('schedule'),
+          shift_nd:(document.getElementById('shift_nd')==null?'null':(document.getElementsByName('shift_nd')[0].checked?"0":"1")),
+          form:getRadioBtn('form'),
+          housing:(document.getElementById('housing')==null?'null':(document.getElementsByName('housing')[0].checked?"0":"1")),
+          many_description:(document.getElementById('many_description')==null||document.getElementById('many_description').value==""?'null':document.getElementById('many_description').value)
         }; 
+        if((data.start_date!='null')&&(data.end_date!='null')&&(data.scope_of_services!='null')&&(data.count_worker!='null')&&(data.count_hour!='null')&&(data.age!='null')&&(data.citizenship!='null')&&(data.experience!='null')){
+            var json=JSON.stringify(data);
+            console.log("/PHP/?api.createOrder="+jsonEscape(json));
+            $.ajax({
+                url: "/PHP/?api.createOrder="+jsonEscape(json)
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                if(!answ.response.error){
+                    alert("Заявка направлена модераторам. Модератор свяжется с Вами в течении 1 рабочего дня.");
+                }else{
+                    alert(answ.response.message);
+                }
+    
+            });
+        }else{
+            alert('Заполните обязательные поля!!!');
+        }
     }
 
 
@@ -163,8 +194,8 @@
                 Нет <input type="radio" name="driver_license" value="1" checked  style="width:4%;" class="line"></li>
             <li><p class="line">Наличие иной разрешительной документации</p><input id="other_right" type="text" class="line"></li>
             <li><p class="line">Налие опыта оказания услуг</p>
-                Обязательно<input type="radio" name="experience" checked value="0"  style="width:4%;" class="line" >
-                Необязательно<input type="radio" name="experience" value="1"  style="width:4%;" class="line"></li>
+                Обязательно<input type="radio" id="experience" name="experience" checked value="0"  style="width:4%;" class="line" >
+                Необязательно<input type="radio" id="experience" name="experience" value="1"  style="width:4%;" class="line"></li>
             <li><p class="line">Обучение на месте оказания услуг</p>
                 Есть<input type="radio" name="training" checked value="0"  style="width:4%;" class="line" >
                Нет<input type="radio" name="training" value="1"  style="width:4%;" class="line">
