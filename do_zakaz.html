@@ -12,6 +12,48 @@
           return matches ? decodeURIComponent(matches[1]) : undefined;
     }
 
+    function getCitizenship(){
+        var cb=document.getElementsByName('citizenship');
+        var checkboxesChecked = new Array(4); 
+        for (var index = 0; index < cb.length; index++) {
+            if (cb[index].checked) {
+                checkboxesChecked[index]=cb[index].value*1; 
+            }
+        }
+        return JSON.stringify(checkboxesChecked);
+    }
+
+    function onReg(){
+        var cookie=JSON.parse(getCookie(data)); 
+        let data={
+          name:(document.getElementById('name')==null||document.getElementById('name').value==""?'null':document.getElementById('name').value),
+          description:(document.getElementById('description')==null||document.getElementById('description').value==""?'null':document.getElementById('description').value),
+          user_id:(cookie!=undefined?function(){alert('Вы не авторизовались!');document.location.href = "login.html";}:cookie.response.id),
+          region:document.getElementById('region').value,
+          city:document.getElementById('city').value,
+          legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
+          start_date:(document.getElementById('start_date')==null||document.getElementById('start_date').value==""?'null':document.getElementById('start_date').value),
+          end_date:(document.getElementById('end_date')==null||document.getElementById('end_date').value==""?'null':document.getElementById('end_date').value),
+          scope_of_services:(document.getElementById('scope_of_services')==null||document.getElementById('scope_of_services').value==""?'null':document.getElementById('scope_of_services').value),
+          count_worker:(document.getElementById('count_worker')==null||document.getElementById('count_worker').value==""?'null':document.getElementById('count_worker').value),
+          count_hour:(document.getElementById('count_hour')==null||document.getElementById('count_hour').value==""?'null':document.getElementById('count_hour').value),
+          sex:(document.getElementById('sex')==null?'null':(document.getElementsByName('sex')[0].checked?"0":"1")),
+          age:(document.getElementById('age')==null||document.getElementById('age').value==""?'null':document.getElementById('age').value),
+          self_employment:(document.getElementById('sam')==null?'null':(document.getElementsByName('sam')[0].checked?"0":"1")),
+          skills:(document.getElementById('skills')==null||document.getElementById('skills').value==""?'null':document.getElementById('skills').value),
+          name_company:(document.getElementById('name_company')==null||document.getElementById('name_company').value==""?'null':document.getElementById('name_company').value),
+          legal_address:(document.getElementById('legal_address')==null||document.getElementById('legal_address').value==""?'null':document.getElementById('legal_address').value),
+          fact_address:(document.getElementById('fact_address')==null||document.getElementById('fact_address').value==""?'null':document.getElementById('fact_address').value),
+          city:(document.getElementById('city')==null||document.getElementById('city').value==""?'null':document.getElementById('city').value),
+          ogrn:(document.getElementById('ogrn')==null||document.getElementById('ogrn').value==""?'null':document.getElementById('ogrn').value),
+          site:(document.getElementById('site')==null||document.getElementById('site').value==""?'null':document.getElementById('site').value),
+          typeUser:"1",
+          login:"null",
+          password:"null"
+        }; 
+    }
+
+
     function load(){
             $.ajax({
                 url: "/PHP/?api.getRegion={}",
@@ -22,9 +64,6 @@
                     for(var i=0;i<answ.response.arrayRegion.length;i++){
                         $("#region").append("<option value='"+answ.response.arrayRegion[i].idRegion+"'>"+answ.response.arrayRegion[i].name+"</option>");
                         if(i==0){
-                                console.log("/PHP/?api.getCity="+JSON.stringify({
-                                    id:answ.response.arrayRegion[i].idRegion
-                                }));
                             $.ajax({
                                 url: "/PHP/?api.getCity="+JSON.stringify({
                                     id:answ.response.arrayRegion[i].idRegion
@@ -91,67 +130,67 @@
     </div>
     <div class="reg">
         <ul>
-            <li><p class="line">Сфера выполнения работ</p> Производство <input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                Логистика <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-               Общепит  <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-               Розница и сети <input type="radio" name="ship" value="Корабль" style="width:4%;" class="line" ></li>
-            <li><p class="line">Наименование услуги</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Сфера выполнения работ</p> Производство <input type="radio" name="industry" value="3"  style="width:5%;" class="line" checked>
+                Логистика <input type="radio" name="industry" value="1"  style="width:4%;" class="line" >
+               Общепит  <input type="radio" name="industry" value="4"  style="width:4%;" class="line">
+               Розница и сети <input type="radio" name="industry" value="2" style="width:4%;" class="line" ></li>
+            <li><p class="line">Наименование услуги</p><input id="name" type="text" class="line"></li>
             <li><p class="line">Адрес проведения работ:</p></li>
             <li><p class="line">Область</p><Select onchange="regionChange()" id="region" class="line"></Select></li>
             <li><p class="line">Город</p><Select  id="city" class="line"></Select></li>
             <li><p class="line">Точный адрес</p><input id="legal_address" type="text" class="line"></li>
-            <li><p class="line">Дата начала работ</p><input type="date" class="line"></li>
-            <li><p class="line">Предполагаемая дата окончания работ</p><input type="date" class="line"></li>
-            <li><p class="line">Общий обьем услуг, которые надо выполнить в это время</p><input id="email" type="text" class="line"></li>
-            <li><p class="line">Количество исполнителей</p><input id="phone_num" type="text" class="line"></li>
-            <li><p class="line">Общее количество часов работ</p><input id="city" type="text" class="line"></li>
+            <li><p class="line">Дата начала работ</p><input type="date" id="start_date" class="line"></li>
+            <li><p class="line">Предполагаемая дата окончания работ</p><input type="date" id="end_date" class="line"></li>
+            <li><p class="line">Общий обьем услуг, которые надо выполнить в это время</p><input id="scope_of_services" type="text" class="line"></li>
+            <li><p class="line">Количество исполнителей</p><input id="count_worker" type="text" class="line"></li>
+            <li><p class="line">Общее количество часов работ</p><input id="count_hour" type="text" class="line"></li>
             <li><p class="line">Требования к исполнителям:</li>
             <li><p class="line">Пол</p><input type="radio" id="sex" name="sex" value="0" class="line" style="width:5%;"checked="checked"> Мужской <input type="radio"style="width:5%;" id="sex" name="sex" value="1" class="line"> Женский</li>
                 
-            <li><p class="line">Возраст</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Возраст</p><input id="age" type="text" class="line"></li>
             <li><p class="line">Гражданство</p>
-                 Рф <input type="checkbox" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                 Гр. таможенного союза <input type="checkbox" name="car" value="Автомобиль"  style="width:5%;" class="line" >
-                  Гр. СНГ  <input type="checkbox" name="train" value="Поезд"  style="width:5%;" class="line">
-                  Любое  <input type="checkbox" name="ship" value="Корабль" style="width:5%;" class="line" ></li>
+                 Рф <input type="checkbox" name="citizenship" value="0"  style="width:5%;" class="line">
+                 Гр. таможенного союза <input type="checkbox" name="citizenship" value="1"  style="width:5%;" class="line" >
+                  Гр. СНГ  <input type="checkbox" name="citizenship" value="2"  style="width:5%;" class="line">
+                  Любое  <input type="checkbox" name="citizenship" value="3" style="width:5%;" class="line" ></li>
             <li><p class="line">Наличие медицинской книжки</p>
-                Требуется<input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                Не требуется <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-               Помогаем с оформлением <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Требуется<input type="radio" name="med_book" value="0" checked style="width:5%;" class="line">
+                Не требуется <input type="radio" name="med_book" value="1"  style="width:4%;" class="line" >
+               Помогаем с оформлением <input type="radio" name="med_book" value="2"  style="width:4%;" class="line">
                </li>
             <li><p class="line">Наличие прав</p>
-                Да<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-                Нет <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
-            <li><p class="line">Наличие иной разрешительной документации</p><input id="industry" type="text" class="line"></li>
+                Да<input type="radio" name="driver_license" value="0"  style="width:4%;" class="line" >
+                Нет <input type="radio" name="driver_license" value="1" checked  style="width:4%;" class="line"></li>
+            <li><p class="line">Наличие иной разрешительной документации</p><input id="other_right" type="text" class="line"></li>
             <li><p class="line">Налие опыта оказания услуг</p>
-                Обязательно<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-                Необязательно<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+                Обязательно<input type="radio" name="experience" checked value="0"  style="width:4%;" class="line" >
+                Необязательно<input type="radio" name="experience" value="1"  style="width:4%;" class="line"></li>
             <li><p class="line">Обучение на месте оказания услуг</p>
-                Есть<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-               Нет<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                  Не требуется<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
-            <li><p class="line">Желаемый график оказания услуг</p>2/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-              4/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-               5/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                 6/1<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                свободный<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                любой<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+                Есть<input type="radio" name="training" checked value="0"  style="width:4%;" class="line" >
+               Нет<input type="radio" name="training" value="1"  style="width:4%;" class="line">
+                  Не требуется<input type="radio" name="training" value="3"  style="width:4%;" class="line"></li>
+            <li><p class="line">Желаемый график оказания услуг</p>2/2<input type="radio" name="schedule" value="0"  style="width:4%;" checked class="line">
+              4/2<input type="radio" name="schedule" value="1"  style="width:4%;" class="line">
+               5/2<input type="radio" name="schedule" value="2"  style="width:4%;" class="line">
+                 6/1<input type="radio" name="schedule" value="3"  style="width:4%;" class="line">
+                свободный<input type="radio" name="schedule" value="4"  style="width:4%;" class="line">
+                любой<input type="radio" name="schedule" value="5"  style="width:4%;" class="line"></li>
             <li><p class="line">Желаемое время оказания услуг</p>
-                День <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                Ночь<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+                День <input type="radio" checked name="shift_nd" value="0"  style="width:4%;" class="line">
+                Ночь<input type="radio" name="shift_nd" value="1"  style="width:4%;" class="line"></li>
             <li><p class="line">Форма исполнителя</p>
-                Должна быть своя <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                Готовы предоставить <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                Не требуется <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Должна быть своя <input type="radio" checked name="form" value="0"  style="width:4%;" class="line">
+                Готовы предоставить <input type="radio" name="form" value="1"  style="width:4%;" class="line">
+                Не требуется <input type="radio" name="form" value="2"  style="width:4%;" class="line">
             </li>
             <li><p class="line">Предоставления жилья иногородним</p>
-                бесплатно <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-               с вычетом из суммы вознагрождения <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                бесплатно <input type="radio" checked name="housing" value="0"  style="width:4%;" class="line">
+               с вычетом из суммы вознагрождения <input type="radio" name="housing" value="1"  style="width:4%;" class="line">
             </li>
-            <li><p class="line" style="vertical-align: top;">Описание задач исполнителей</p><textarea class="line" style="width:63%;resize: none;">
+            <li><p class="line" style="vertical-align: top;">Описание задач исполнителей</p><textarea id="description"class="line" style="width:63%;resize: none;">
                 
               </textarea></li>
-            <li><p class="line" style="vertical-align: top;">дополнительная информация по заказу</p><textarea class="line" style="width:63%;resize: none;">
+            <li><p class="line" style="vertical-align: top;">дополнительная информация по заказу</p><textarea id="many_description" class="line" style="width:63%;resize: none;">
                
               </textarea></li>
               <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
