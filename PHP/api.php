@@ -440,6 +440,15 @@
             return $retJSON;
         }
 
+        function createAdvert($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+
+            $result=$sql->mySQLWorker->connectLink->query("INSERT INTO `Advert`(`id`,  `industry_id`, `name`, `description`, `user_id`, `region_id`, `start_date`, `count_day`, `sex`, `age`, `citizenship`, `med_book`, `driver_license`, `other_right`, `experience`, `schedule`, `important`, `skill`, `img`, `approved`) VALUES (null,".$apiMethodParams->industry.",".$this->strornull($apiMethodParams->name).",".$this->strornull($apiMethodParams->description).",".$apiMethodParams->user_id.",".$apiMethodParams->region.",".$this->strornull($apiMethodParams->start_date).",".$apiMethodParams->count_day.",".$apiMethodParams->sex.",".$apiMethodParams->age.",".$this->strornull($apiMethodParams->citizenship).",".$apiMethodParams->med_book.",".$apiMethodParams->driver_license.",".$this->strornull($apiMethodParams->other_right).",".$apiMethodParams->experience.",".$apiMethodParams->schedule.",".$this->strornull($apiMethodParams->important).",".$this->strornull($apiMethodParams->skill).",".$this->strornull($apiMethodParams->img).",0)");
+            $retJSON=new Message(false,"");
+            return $retJSON;
+        }
+
         function getIndustry(){
             $retJSON = $this->createDefaultJson();
             try{

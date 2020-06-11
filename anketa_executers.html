@@ -7,14 +7,118 @@
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
       
+      var imgPath;
+
       function getCookie(name) {
         var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
           return matches ? decodeURIComponent(matches[1]) : undefined;
       }
 
+      function getCheckBox(name){
+        var cb=document.getElementsByName(name);
+        var checkboxesChecked = new Array(4); 
+        for (var index = 0; index < cb.length; index++) {
+            if (cb[index].checked) {
+                checkboxesChecked[index]=cb[index].value*1; 
+            }
+        }
+        return JSON.stringify(checkboxesChecked);
+      }
+
+      function load(){
+        $.ajax({
+            url: "/PHP/?api.getRegion={}",
+        }).done(function(e) {
+          var answ=JSON.parse(e);
+          var answs=JSON.parse(e);
+            if(!answ.response.error){
+              for(var i=0;i<answ.response.arrayRegion.length;i++){
+                $("#region").append("<option value='"+answ.response.arrayRegion[i].idRegion+"'>"+answ.response.arrayRegion[i].name+"</option>");
+              }      
+            }else{
+              alert("Проблема решается!");
+            }
+        });
+      }
+
+      function jsonEscape(str)  {
+        return str.replace(/\\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+      }
+
+      function getRadioBtn(name){
+        var rb=document.getElementsByName(name);
+        for (var index = 0; index < rb.length; index++) {
+            if (rb[index].checked) {
+                return rb[index].value;
+            }
+        }
+      }
+
+      function selectImg(){
+        var $input = $("#imgFile");
+        var fd = new FormData();
+        if (jQuery('#imgFile').val()!="") { 
+          fd.append('img', $input.prop('files')[0]);
+          fd.append('src',jQuery('#imgFile').val());
+        }
+        console.log($input.prop('files')[0]);
+        $.ajax({ 
+          url: "PHP/savePhoto.php",
+          type: "POST",
+          data: fd,
+          processData: false,
+          contentType: false,
+          success: function(msg){ 
+            imgPath=msg;
+          }
+        });
+      }
+
+      function onReg(){
+        var cookie=JSON.parse(getCookie('data')); 
+        var data={
+          name:(document.getElementById('name')==null||document.getElementById('name').value==""?'null':document.getElementById('name').value),
+          description:(document.getElementById('description')==null||document.getElementById('description').value==""?'null':document.getElementById('description').value),
+          region:document.getElementById('region').value,
+          start_date:(document.getElementById('start_date')==null||document.getElementById('start_date').value==""?'null':document.getElementById('start_date').value),
+          count_day:(document.getElementById('count_day')==null||document.getElementById('count_day').value==""?'null':document.getElementById('count_day').value),
+          sex:(document.getElementById('sex')==null?'null':(document.getElementsByName('sex')[0].checked?"0":"1")),
+          age:(document.getElementById('age')==null||document.getElementById('age').value==""?'null':document.getElementById('age').value),
+          citizenship:getCheckBox('citizenship'),
+          med_book:getRadioBtn('med_book'),
+          industry:getRadioBtn('industry'),
+          user_id:(cookie==undefined?function(){alert('Вы не авторизовались!');document.location.href = "login.html";}:cookie.response.id),
+          driver_license:(document.getElementById('driver_license')==null?'null':(document.getElementsByName('driver_license')[0].checked?"0":"1")),
+          other_right:(document.getElementById('other_right')==null||document.getElementById('other_right').value==""?'null':document.getElementById('other_right').value),
+          experience:(document.getElementById('experience')==null?'null':(document.getElementsByName('experience')[0].checked?"0":"1")),
+          schedule:getRadioBtn('schedule'),
+          important:getCheckBox('important'),
+          skill:(document.getElementById('skill')==null||document.getElementById('skill').value==""?'null':document.getElementById('skill').value),
+          img:imgPath
+        }; 
+        var json=JSON.stringify(data);
+        //if((data.start_date!='null')&&(data.end_date!='null')&&(data.scope_of_services!='null')&&(data.count_worker!='null')&&(data.count_hour!='null')&&(data.age!='null')&&(data.citizenship!='null')&&(data.experience!='null')){
+            var json=JSON.stringify(data);
+            console.log("/PHP/?api.createAdvert="+jsonEscape(json));
+            $.ajax({
+                url: "/PHP/?api.createAdvert="+jsonEscape(json)
+            }).done(function(e) {
+                var answ=JSON.parse(e);
+                if(!answ.response.error){
+                    alert("Заявка направлена модераторам. Модератор свяжется с Вами в течении 1 рабочего дня.");
+                }else{
+                    alert(answ.response.message);
+                }
+    
+            });
+        //}else{
+        //    alert('Заполните обязательные поля!!!');
+        //}
+    }
+
     </script>
 </head>
-<body>
+<body onload="load()">
    
     <div class="main_head">
         <div  class="line">MAKEWORK</div> 
@@ -40,55 +144,55 @@
     </div>
     <div class="reg">
         <ul>
-            <li><p class="line">Сфера выполнения работ</p> Производство <input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                Логистика <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-               Общепит  <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-               Розница и сети <input type="radio" name="ship" value="Корабль" style="width:4%;" class="line" ></li>
-            <li><p class="line">Наименование услуги</p><input id="industry" type="text" class="line"></li>
-            <li><p class="line">Адрес проведения работ</p></li>
-            <li><p class="line">Область</p><input id="inn" type="text" class="line"></li>
-            <li><p class="line">Когда готовы приступить</p><input type="date" class="line"></li>
-            <li><p class="line">Сколько дней готовы потратить</p><input id="inn" type="text" class="line"></li>
+            <li><p class="line">Сфера выполнения работ</p> Производство <input type="radio" name="industry" value="3"  style="width:5%;" class="line" checked>
+                Логистика <input type="radio" name="industry" value="1"  style="width:4%;" class="line" >
+               Общепит  <input type="radio" name="industry" value="4"  style="width:4%;" class="line">
+               Розница и сети <input type="radio" name="industry" value="2" style="width:4%;" class="line" ></li>
+            <li><p class="line">Наименование услуги</p><input id="name" type="text" class="line"></li>
+            <li><p class="line">Адрес проведения работ:</p></li>
+            <li><p class="line">Область</p><Select id="region" class="line"></Select></li>
+            <li><p class="line">Когда готовы приступить</p><input id="start_date" type="date" class="line"></li>
+            <li><p class="line">Сколько дней готовы потратить</p><input id="count_day" type="text" class="line"></li>
             <li><p class="line">Пол</p><input type="radio" id="sex" name="sex" value="0" class="line" style="width:5%;"checked="checked"> Мужской <input type="radio"style="width:5%;" id="sex" name="sex" value="1" class="line"> Женский</li>
                 
-            <li><p class="line">Возраст</p><input id="industry" type="text" class="line"></li>
+            <li><p class="line">Возраст</p><input id="age" type="text" class="line"></li>
             <li><p class="line">Гражданство</p>
-                 Рф <input type="checkbox" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                 Гр. таможенного союза <input type="checkbox" name="car" value="Автомобиль"  style="width:5%;" class="line" >
-                  Гр. СНГ  <input type="checkbox" name="train" value="Поезд"  style="width:5%;" class="line">
-                  Любое  <input type="checkbox" name="ship" value="Корабль" style="width:5%;" class="line" ></li>
+                 Рф <input type="checkbox" name="citizenship" value="0"  style="width:5%;" class="line">
+                 Гр. таможенного союза <input type="checkbox" name="citizenship" value="1"  style="width:5%;" class="line" >
+                  Гр. СНГ  <input type="checkbox" name="citizenship" value="2"  style="width:5%;" class="line">
+                  Любое  <input type="checkbox" name="citizenship" value="3" style="width:5%;" class="line" ></li>
             <li><p class="line">Наличие медицинской книжки</p>
-                Есть<input type="radio" name="airplane" value="Самолет"  style="width:5%;" class="line">
-                Нет <input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-               Требуется продление <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
+                Требуется<input type="radio" name="med_book" value="0" checked style="width:5%;" class="line">
+                Не требуется <input type="radio" name="med_book" value="1"  style="width:4%;" class="line" >
+               Помогаем с оформлением <input type="radio" name="med_book" value="2"  style="width:4%;" class="line">
                </li>
             <li><p class="line">Наличие прав</p>
-                Да<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-                Нет <input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
-            <li><p class="line">Наличие иной разрешительной документации</p><input id="industry" type="text" class="line"></li>
+                Да<input type="radio" id="driver_license" name="driver_license" value="0"  style="width:4%;" class="line" >
+                Нет <input type="radio" id="driver_license" name="driver_license" value="1" checked  style="width:4%;" class="line"></li>
+            <li><p class="line">Наличие иной разрешительной документации</p><input id="other_right" type="text" class="line"></li>
             <li><p class="line">Налие опыта оказания услуг</p>
-                Есть<input type="radio" name="car" value="Автомобиль"  style="width:4%;" class="line" >
-                Нет<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+                Обязательно<input type="radio" id="experience" name="experience" checked value="0"  style="width:4%;" class="line" >
+                Необязательно<input type="radio" id="experience" name="experience" value="1"  style="width:4%;" class="line"></li>
          
-            <li><p class="line">Желаемый график оказания услуг</p>2/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-              4/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-               5/2<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                 6/1<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                свободный<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line">
-                любой<input type="radio" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+            <li><p class="line">Желаемый график оказания услуг</p>2/2<input type="radio" name="schedule" value="0"  style="width:4%;" checked class="line">
+              4/2<input type="radio" name="schedule" value="1"  style="width:4%;" class="line">
+               5/2<input type="radio" name="schedule" value="2"  style="width:4%;" class="line">
+                 6/1<input type="radio" name="schedule" value="3"  style="width:4%;" class="line">
+                свободный<input type="radio" name="schedule" value="4"  style="width:4%;" class="line">
+                любой<input type="radio" name="schedule" value="5"  style="width:4%;" class="line"></li>
             <li><p class="line">Что для вас важно?</p>
-               Близость к дому <input type="checkbox" name="train" value="Поезд"  style="width:4%;" class="line">
-               Размер оплаты<input type="checkbox" name="train" value="Поезд"  style="width:4%;" class="line">
-               График оказания услуг<input type="checkbox" name="train" value="Поезд"  style="width:4%;" class="line">
-               Бесплатное жилье и прочее<input type="checkbox" name="train" value="Поезд"  style="width:4%;" class="line"></li>
+               Близость к дому <input type="checkbox" name="important" value="Поезд"  style="width:4%;" class="line">
+               Размер оплаты<input type="checkbox" name="important" value="Поезд"  style="width:4%;" class="line">
+               График оказания услуг<input type="checkbox" name="important" value="Поезд"  style="width:4%;" class="line">
+               Бесплатное жилье и прочее<input type="checkbox" name="important" value="Поезд"  style="width:4%;" class="line"></li>
          
-            <li><p class="line" style="vertical-align: top;">Опишите свои навыки</p><textarea class="line" style="width:63%;resize: none;">
+            <li><p class="line" style="vertical-align: top;">Опишите свои навыки</p><textarea id="skill" class="line" style="width:63%;resize: none;">
                 
               </textarea></li>
-            <li><p class="line" style="vertical-align: top;">Дополнительная информация</p><textarea class="line" style="width:63%;resize: none;">
+            <li><p class="line" style="vertical-align: top;">Дополнительная информация</p><textarea id="description" class="line" style="width:63%;resize: none;">
                
               </textarea></li>
-              <li><p class="line" style="vertical-align: top;">Загрузить фото</p><input type="file" class="line"></li>
+              <li><p class="line" style="vertical-align: top;">Загрузить фото</p><input type="file" onchange="selectImg()" id="imgFile" class="line"></li>
               <img src="img/регистрация заказчика.png" onclick="onReg()" width="15%"alt="" style="float: right;cursor: pointer;margin-right: 1.6%; margin-bottom:3%; border:1px solid #2e3192">
         </ul>
      

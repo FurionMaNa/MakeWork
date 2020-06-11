@@ -17,20 +17,21 @@
                     for(var i=0;i<answ.response.industry.length;i++){
                         $("#industry").append("<option value='"+answ.response.industry[i].id+"'>"+answ.response.industry[i].name+"</option>");
                         if(i==0){
-                            $.ajax({
-                                url: "/PHP/?api.getProfessions="+JSON.stringify({
-                                    id:answ.response.industry[i].id
-                                }),
-                            }).done(function(e) {
-                                var answ=JSON.parse(e);
-                                if(!answ.response.error){
-                                    $("#profession").empty();
-                                    for(var i=0;i<answ.response.professions.length;i++){
-                                        $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
+                            //$.ajax({
+                            //    url: "/PHP/?api.getProfessions="+JSON.stringify({
+                            //        id:answ.response.industry[i].id
+                            //    }),
+                            //}).done(function(e) {
+                            //    var answ=JSON.parse(e);
+                            //    if(!answ.response.error){
+                            //        $("#profession").empty();
+                            //        for(var i=0;i<answ.response.professions.length;i++){
+                            //            $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
                                         if(i==0){
                                             $.ajax({
                                                 url: "/PHP/?api.getAdvert="+JSON.stringify({
-                                                    profession_id:answ.response.professions[i].id
+                                                    //profession_id:answ.response.professions[i].id
+                                                    industry_id:answ.response.industry[i].id
                                                 }),
                                             }).done(function(e) {
                                                 var answ=JSON.parse(e);
@@ -45,26 +46,26 @@
                                                 }
                                             });
                                         }
-                                    }
-                                }else{
-                                    $.ajax({
-                                        url: "/PHP/?api.getAdvert="+JSON.stringify({
-                                            industry_id:answs.response.industry[0].id
-                                        }),
-                                    }).done(function(e) {
-                                        var answ=JSON.parse(e);
-                                        $("#list").empty();
-                                        $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
-                                        if(!answ.response.error){
-                                            for(var i=0;i<answ.response.orders.length;i++){
-                                                $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
-                                            }
-                                        }else{
-                                            alert("Нет вакансий");
-                                        }
-                                    });
-                                }
-                            });
+                            //       }
+                            //   }else{
+                            //       $.ajax({
+                            //           url: "/PHP/?api.getAdvert="+JSON.stringify({
+                            //               industry_id:answs.response.industry[0].id
+                            //           }),
+                            //       }).done(function(e) {
+                            //           var answ=JSON.parse(e);
+                            //           $("#list").empty();
+                            //           $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+                            //           if(!answ.response.error){
+                            //               for(var i=0;i<answ.response.orders.length;i++){
+                            //                    $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                            //                }
+                            //            }else{
+                            //                alert("Нет вакансий");
+                            //            }
+                            //        });
+                            //    }
+                           // });
                         }
                     }
                 }else{
@@ -74,36 +75,36 @@
         }
 
         function industryChange(){
-            $.ajax({
-                url: "/PHP/?api.getProfessions="+JSON.stringify({
-                    id:document.getElementById('industry').value
-                }),
-            }).done(function(e) {
-                var answ=JSON.parse(e);
-                if(!answ.response.error){
-                    $("#profession").empty();
-                    for(var i=0;i<answ.response.professions.length;i++){
-                        $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
-                        if(i==0){
-                            $.ajax({
-                                url: "/PHP/?api.getAdvert="+JSON.stringify({
-                                    profession_id:answ.response.professions[i].id
-                                }),
-                            }).done(function(e) {
-                                var answ=JSON.parse(e);
-                                $("#list").empty();
-                                $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
-                                if(!answ.response.error){
-                                    for(var i=0;i<answ.response.orders.length;i++){
-                                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
-                                    }
-                                }else{
-                                    alert("Нет вакансий");
-                                }
-                            });
-                        } 
-                    }
-                }else{
+            //$.ajax({
+            //    url: "/PHP/?api.getProfessions="+JSON.stringify({
+            //        id:document.getElementById('industry').value
+            //    }),
+            //}).done(function(e) {
+            //    var answ=JSON.parse(e);
+            //    if(!answ.response.error){
+            //        $("#profession").empty();
+            //        for(var i=0;i<answ.response.professions.length;i++){
+            //            $("#profession").append("<option value='"+answ.response.professions[i].id+"'>"+answ.response.professions[i].name+"</option>");
+            //            if(i==0){
+            //                $.ajax({
+            //                    url: "/PHP/?api.getAdvert="+JSON.stringify({
+            //                        profession_id:answ.response.professions[i].id
+            //                    }),
+            //                }).done(function(e) {
+            //                    var answ=JSON.parse(e);
+            //                    $("#list").empty();
+            //                    $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
+            //                    if(!answ.response.error){
+            //                        for(var i=0;i<answ.response.orders.length;i++){
+            //                            $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+            //                        }
+            //                    }else{
+            //                        alert("Нет вакансий");
+            //                    }
+            //                });
+            //            } 
+            //        }
+            //    }else{
                     $.ajax({
                         url: "/PHP/?api.getAdvert="+JSON.stringify({
                             industry_id:document.getElementById('industry').value
@@ -120,8 +121,8 @@
                             alert("Нет вакансий");
                         }
                     });
-                }
-            });                                             
+                //}
+           // });                                             
         }
 
         function professionsChange(){
