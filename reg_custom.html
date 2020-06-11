@@ -32,7 +32,7 @@
           password:"null"
         }; 
         $.ajax({
-          url: "/PHP/?api.registration="+JSON.stringify(data).replace(/\\n/g, "\\n").replace(/\\'/g, "\\'").replace(/\\"/g, '\\"').replace(/\\&/g, "\\&").replace(/\\r/g, "\\r").replace(/\\t/g, "\\t").replace(/\\b/g, "\\b").replace(/\\f/g, "\\f");
+          url: "/PHP/?api.registration="+JSON.stringify(data)
         }).done(function(e) {
           var answ=JSON.parse(e);
           if(!answ.response.error){
