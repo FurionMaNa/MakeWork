@@ -29,7 +29,11 @@
           site:(document.getElementById('site')==null||document.getElementById('site').value==""?'null':document.getElementById('site').value),
           typeUser:"1",
           login:"null",
-          password:"null"
+          password:"null",
+          kpp:(document.getElementById('kpp')==null||document.getElementById('kpp').value==""?'null':document.getElementById('kpp').value),
+          bank:(document.getElementById('bank')==null||document.getElementById('bank').value==""?'null':document.getElementById('bank').value),
+          rs:(document.getElementById('rs')==null||document.getElementById('rs').value==""?'null':document.getElementById('rs').value),
+          ks:(document.getElementById('ks')==null||document.getElementById('ks').value==""?'null':document.getElementById('ks').value)
         }; 
         $.ajax({
           url: "/PHP/?api.registration="+JSON.stringify(data)
@@ -72,11 +76,10 @@
           <li><p class="line">Сфера деятельности</p><input id="industry" type="text" class="line"></li>
           <li><p class="line">ИНН</p><input id="inn" type="text" class="line"></li>
           <li><p class="line">ОГРН</p><input id="ogrn" type="text" class="line"></li>
-    <!---->      <li><p class="line">КПП</p><input id="ogrn" type="text" class="line"></li>
-    <!---->      <li><p class="line">Банк</p><input id="ogrn" type="text" class="line"></li>
-    <!---->      <li><p class="line">Расчетный счет</p><input id="ogrn" type="text" class="line"></li>
-     <!---->      <li><p class="line">Банк</p><input id="ogrn" type="text" class="line"></li>
-      <!---->      <li><p class="line">Корреспондентский счет</p><input id="ogrn" type="text" class="line"></li>
+    <!---->      <li><p class="line">КПП</p><input id="kpp" type="text" class="line"></li>
+    <!---->      <li><p class="line">Банк</p><input id="bank" type="text" class="line"></li>
+    <!---->      <li><p class="line">Расчетный счет</p><input id="rs" type="text" class="line"></li>
+      <!---->      <li><p class="line">Корреспондентский счет</p><input id="ks" type="text" class="line"></li>
           <li><p class="line">Юридический адрес</p><input id="legal_address" type="text" class="line"></li>
           <li><p class="line">Фактический адрес</p><input id="fact_address" type="text" class="line"></li>
           <li><p class="line">Сайт</p><input id="site" type="text" class="line"></li>
