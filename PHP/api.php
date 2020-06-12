@@ -3,6 +3,82 @@
 	ini_set('display_errors', 1);
 	error_reporting(E_ALL);
 
+    class Advert{
+        var $error=false;
+        var $advert=array();
+
+        function __construct($error,$advert){
+            $this->error=$error;
+            $this->advert=$advert;
+        }
+    } 
+
+    class AdvertElem{
+        var $id;
+        var $name;
+        var $description;
+        var $skill;
+        var $sex;
+        var $age;
+        var $userName;
+        var $userSurname;
+        var $reg;
+        var $start_date;
+        var $count_day;
+        var $citizenship;
+        var $med_book;
+        var $driver_license;
+        var $other_right;
+        var $experience;
+        var $schedule;
+        var $important;
+        var $industry;
+        var $img;
+
+        function __construct($id,
+                             $name,
+                             $description,
+                             $skill,
+                             $sex,
+                             $age,
+                             $userName,
+                             $userSurname,
+                             $reg,
+                             $start_date,
+                             $count_day,
+                             $citizenship,
+                             $med_book,
+                             $driver_license,
+                             $other_right,
+                             $experience,
+                             $schedule,
+                             $important,
+                             $industry,
+                             $img){
+            $this->id=$id;
+            $this->name=$name;
+            $this->description=$description;
+            $this->skill=$skill;
+            $this->sex=$sex;
+            $this->age=$age;
+            $this->userName=$userName;
+            $this->userSurname=$userSurname;
+            $this->reg=$reg;
+            $this->start_date=$start_date;
+            $this->count_day=$count_day;
+            $this->citizenship=$citizenship;
+            $this->med_book=$med_book;
+            $this->driver_license=$driver_license;
+            $this->other_right=$other_right;
+            $this->experience=$experience;
+            $this->schedule=$schedule;
+            $this->important=$important;
+            $this->industry=$industry;
+            $this->img=$img;
+        }
+
+    }
+
     class Orders{
         var $error=false;
         var $orders=array();
@@ -15,23 +91,84 @@
 
     class OrdersElem{
         var $id;
-        var $profession_id;
-        var $industry_id;
         var $name;
         var $description;
         var $price;
-        var $userName;
-        var $userSurname;
+        var $industry;
+        var $reg;
+        var $cit;
+        var $address;
+        var $start_date;
+        var $end_date;
+        var $scope_of_services;
+        var $count_worker;
+        var $count_hour;
+        var $sex;
+        var $age;
+        var $citizenship;
+        var $med_book;
+        var $driver_license;
+        var $other_right;
+        var $experience;
+        var $training;
+        var $schedule;
+        var $shift_nd;
+        var $form;
+        var $housing;
+        var $many_description;
 
-        function __construct($id,$profession_id,$industry_id,$name,$description,$price,$userName,$userSurname){
+        function __construct($id,
+                             $name,
+                             $description,
+                             $price,
+                             $industry,
+                             $reg,
+                             $cit,
+                             $address,
+                             $start_date,
+                             $end_date,
+                             $scope_of_services,
+                             $count_worker,
+                             $count_hour,
+                             $sex,
+                             $age,
+                             $citizenship,
+                             $med_book,
+                             $driver_license,
+                             $other_right,
+                             $experience,
+                             $training,
+                             $schedule,
+                             $shift_nd,
+                             $form,
+                             $housing,
+                             $many_description){
             $this->id=$id;
-            $this->profession_id=$profession_id;
-            $this->industry_id=$industry_id;
             $this->name=$name;
             $this->description=$description;
             $this->price=$price;
-            $this->userName=$userName;
-            $this->userSurname=$userSurname;
+            $this->industry=$industry;
+            $this->reg=$reg;
+            $this->cit=$cit;
+            $this->address=$address;
+            $this->start_date=$start_date;
+            $this->end_date=$end_date;
+            $this->scope_of_services=$scope_of_services;
+            $this->count_worker=$count_worker;
+            $this->count_hour=$count_hour;
+            $this->sex=$sex;
+            $this->age=$age;
+            $this->citizenship=$citizenship;
+            $this->med_book=$med_book;
+            $this->driver_license=$driver_license;
+            $this->other_right=$other_right;
+            $this->experience=$experience;
+            $this->training=$training;
+            $this->schedule=$schedule;
+            $this->shift_nd=$shift_nd;
+            $this->form=$form;
+            $this->housing=$housing;
+            $this->many_description=$many_description;
         }
 
     }
@@ -350,6 +487,42 @@
             return $retJSON;
         }
 
+        function getOrderUnReg(){
+            $mass=array();
+            $i=0;
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            $result=$sql->mySQLWorker->connectLink->query("SELECT `Orders`.`id`,  `Orders`.`name`, `Orders`.`description`, `Orders`.`price`,  `Orders`.`address`, `Orders`.`start_data`, `Orders`.`end_data`, `Orders`.`scope_of_services`, `Orders`.`count_worker`, `Orders`.`count_hour`, `Orders`.`sex`, `Orders`.`age`, `Orders`.`citizenship`, `Orders`.`med_book`, `Orders`.`driver_license`, `Orders`.`other_right`, `Orders`.`experience`, `Orders`.`training`, `Orders`.`schedule`, `Orders`.`shift_nd`, `Orders`.`form`, `Orders`.`housing`, `Orders`.`many_description`, `Industry`.`Name` as 'industry',`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS', `region`.`name` as 'reg', `city`.`name` as 'cit' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`) inner join `region`on(`Orders`.`region_id`=`region`.`id`) inner join `city`on(`Orders`.`city_id`=`city`.`id`) inner join `Industry`on(`Orders`.`industry_id`=`Industry`.`id`) where(`approved`=0)");
+            if($result->num_rows>=1){
+                while ($obj = $result->fetch_object()) {
+                    $mass[$i]=new OrdersElem($obj->id,$obj->name,$obj->description,null,$obj->industry,$obj->reg,$obj->cit,$obj->address,$obj->start_data,$obj->end_data,$obj->scope_of_services,$obj->count_worker,$obj->count_hour,$obj->sex,$obj->age,$obj->citizenship,$obj->med_book,$obj->driver_license,$obj->other_right,$obj->experience,$obj->training,$obj->schedule,$obj->shift_nd,$obj->form,$obj->housing,$obj->many_description);
+                    $i++;
+                }
+                $retJSON=new Orders(false,$mass,null);
+            }else{
+                $retJSON=new Orders(true,null,"Нет объявлений ожидающих подтверждения!");
+            }
+            return $retJSON;
+        }
+
+        function getAdvertUnReg(){
+            $mass=array();
+            $i=0;
+            $retJSON = $this->createDefaultJson();
+            $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");//""$sql=new apiBaseClass("MakeWorkBase","localhost","mysql","mysql");
+            $result=$sql->mySQLWorker->connectLink->query("SELECT`Advert`.id,`Industry`.`Name` as 'industry',`Advert`.`name`,`Advert`.`description`,`Advert`.`skill`,`Advert`.`sex`,`Advert`.`age`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS', `region`.`name` as 'reg',`Advert`.`start_date`,`Advert`.`count_day`,`Advert`.`citizenship`,`Advert`.`med_book`,`Advert`.`driver_license`,`Advert`.`other_right`,`Advert`.`experience`,`Advert`.`schedule`,`Advert`.`important`,`Advert`.`img` FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`) inner join `region`on(`Advert`.`region_id`=`region`.`id`) inner join `Industry`on(`Advert`.`industry_id`=`Industry`.`id`) where(`approved`=0)");
+            if($result->num_rows>=1){
+                while ($obj = $result->fetch_object()) {
+                    $mass[$i]=new AdvertElem($obj->id,$obj->name,$obj->description,$obj->skill,$obj->sex,$obj->age,$obj->userN,$obj->userS,$obj->reg,$obj->start_date,$obj->count_day,$obj->citizenship,$obj->med_book,$obj->driver_license,$obj->other_right,$obj->experience,$obj->schedule,$obj->important,$obj->industry,$obj->img);
+                    $i++;
+                }
+                $retJSON=new Advert(false,$mass,null);
+            }else{
+                $retJSON=new Advert(true,null,"Нет анкет ожидающих подтверждения!");
+            }
+            return $retJSON;
+        }
+
         private function strornull($s){
         	if(($s!=NULL)&&($s!='NULL')){
         		return "'".strval($s)."'";
@@ -383,6 +556,58 @@
             return $retJSON;
         }
 
+        function delAdvert($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->id)){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+                try {
+                    $result=$sql->mySQLWorker->connectLink->query("SELECT `Users`.`email` FROM `Users` inner join `Advert` on(`Advert`.`user_id`= `Users`.`id`) WHERE( `Advert`.`id`=".$apiMethodParams->id.")");
+                    $obj = $result->fetch_object();
+                    $result=$sql->mySQLWorker->connectLink->query("DELETE FROM `Advert` WHERE (`id`=".$apiMethodParams->id.")");
+                    $root = $_SERVER['DOCUMENT_ROOT'];
+                    require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+                    $mail = new PHPMailer;
+                    $mail->addAddress($obj->email);//Почту менять ТУТ 
+                    $mail->CharSet = "utf-8";
+                    $mail->Subject = 'MakeWork';
+                    $mail->msgHTML("От: сайта MakeWork <br> К сожалению вам отказано в размещении анкеты.");
+                    $r = $mail->send();
+                } catch (Exception $e) {
+                    $retJSON=new Message(true,"Ошибка");
+                }
+                $retJSON=new Message(false,"Анкета удалёна");
+            }else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+            }
+            return $retJSON;
+        }
+
+        function delOrders($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->id)){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+                try {
+                    $result=$sql->mySQLWorker->connectLink->query("SELECT `Users`.`email` FROM `Users` inner join `Orders` on(`Orders`.`user_id`= `Users`.`id`) WHERE( `Orders`.`id`=".$apiMethodParams->id.")");
+                    $obj = $result->fetch_object();
+                    $result=$sql->mySQLWorker->connectLink->query("DELETE FROM `Orders` WHERE (`id`=".$apiMethodParams->id.")");
+                    $root = $_SERVER['DOCUMENT_ROOT'];
+                    require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+                    $mail = new PHPMailer;
+                    $mail->addAddress($obj->email);//Почту менять ТУТ 
+                    $mail->CharSet = "utf-8";
+                    $mail->Subject = 'MakeWork';
+                    $mail->msgHTML("От: сайта MakeWork <br> К сожалению вам отказано в размещении объявления.");
+                    $r = $mail->send();
+                } catch (Exception $e) {
+                    $retJSON=new Message(true,"Ошибка");
+                }
+                $retJSON=new Message(false,"Объявление удалёно");
+            }else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+            }
+            return $retJSON;
+        }
+
         function regUser($apiMethodParams){
             $retJSON = $this->createDefaultJson();
             if((isset($apiMethodParams->id))&&(isset($apiMethodParams->login))&&(isset($apiMethodParams->password))){
@@ -408,6 +633,50 @@
             	}else{
                 	$retJSON=new Message(true,"Такой логин уже существует!");
             	}
+            }else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+            }
+            return $retJSON;
+        }
+
+        function regAdvert($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->id)){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+                $result=$sql->mySQLWorker->connectLink->query("UPDATE `Advert` SET `approved`=1 WHERE(`id`=".$apiMethodParams->id.")");
+                $result=$sql->mySQLWorker->connectLink->query("SELECT `Users`.`email` FROM `Users` inner join `Advert` on(`Advert`.`user_id`= `Users`.`id`) WHERE( `Advert`.`id`=".$apiMethodParams->id.")");
+                $obj = $result->fetch_object();
+                $root = $_SERVER['DOCUMENT_ROOT'];
+                require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+                $mail = new PHPMailer;
+                $mail->addAddress($obj->email); 
+                $mail->CharSet = "utf-8";
+                $mail->Subject = 'MakeWork';
+                $mail->msgHTML("От: сайта MakeWork <br> Ваша заявка на создание анкеты одобрено!!!");
+                $r = $mail->send();
+                $retJSON=new Message(false,"Анкета добавлена");
+            }else{
+                $retJSON=new Message(true,"Указаны не все параметры");
+            }
+            return $retJSON;
+        }
+
+        function regOrders($apiMethodParams){
+            $retJSON = $this->createDefaultJson();
+            if(isset($apiMethodParams->id)){
+                $sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
+                $result=$sql->mySQLWorker->connectLink->query("UPDATE `Orders` SET `approved`=1 WHERE(`id`=".$apiMethodParams->id.")");
+                $result=$sql->mySQLWorker->connectLink->query("SELECT `Users`.`email` FROM `Users` inner join `Orders` on(`Orders`.`user_id`= `Users`.`id`) WHERE( `Orders`.`id`=".$apiMethodParams->id.")");
+                $obj = $result->fetch_object();
+                $root = $_SERVER['DOCUMENT_ROOT'];
+                require($root.'/PHP/PHPMailer/PHPMailerAutoload.php');
+                $mail = new PHPMailer;
+                $mail->addAddress($obj->email); 
+                $mail->CharSet = "utf-8";
+                $mail->Subject = 'MakeWork';
+                $mail->msgHTML("От: сайта MakeWork <br> Ваша заявка на создание объявления одобрена!!!");
+                $r = $mail->send();
+                $retJSON=new Message(false,"Объявление зарегистрировано");
             }else{
                 $retJSON=new Message(true,"Указаны не все параметры");
             }
@@ -493,22 +762,24 @@
 
         function getOrders($apiMethodParams){
             $retJSON = $this->createDefaultJson();
-            if(isset($apiMethodParams->industry_id)){
+            //if(isset($apiMethodParams->industry_id)){
                 try{
                     $mass=array();
                 	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
-                    $result=$sql->mySQLWorker->connectLink->query("
-                        SELECT `Orders`.id,`Orders`.`profession_id`,`Orders`.`industry_id`,`Orders`.`name`,`Orders`.`description`,`Orders`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`)WHERE (`Orders`.industry_id=".$apiMethodParams->industry_id.")"); 
-                    $i=0;
-                    while ($obj = $result->fetch_object()) {
-                        $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
-                        $i++;
+                    $result=$sql->mySQLWorker->connectLink->query("SELECT `Orders`.`id`,  `Orders`.`name`, `Orders`.`description`, `Orders`.`price`,  `Orders`.`address`, `Orders`.`start_data`, `Orders`.`end_data`, `Orders`.`scope_of_services`, `Orders`.`count_worker`, `Orders`.`count_hour`, `Orders`.`sex`, `Orders`.`age`, `Orders`.`citizenship`, `Orders`.`med_book`, `Orders`.`driver_license`, `Orders`.`other_right`, `Orders`.`experience`, `Orders`.`training`, `Orders`.`schedule`, `Orders`.`shift_nd`, `Orders`.`form`, `Orders`.`housing`, `Orders`.`many_description`, `Industry`.`Name` as 'industry',`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS', `region`.`name` as 'reg', `city`.`name` as 'cit' FROM `Orders` inner join `Users`on(`Orders`.`user_id`=`Users`.`id`) inner join `region`on(`Orders`.`region_id`=`region`.`id`) inner join `city`on(`Orders`.`city_id`=`city`.`id`) inner join `Industry`on(`Orders`.`industry_id`=`Industry`.`id`) where(`approved`=1)");
+                    if($result->num_rows>=1){
+                        $i=0;
+                        while ($obj = $result->fetch_object()) {
+                            $mass[$i]=new OrdersElem($obj->id,$obj->name,$obj->description,null,$obj->industry,$obj->reg,$obj->cit,$obj->address,$obj->start_data,$obj->end_data,$obj->scope_of_services,$obj->count_worker,$obj->count_hour,$obj->sex,$obj->age,$obj->citizenship,$obj->med_book,$obj->driver_license,$obj->other_right,$obj->experience,$obj->training,$obj->schedule,$obj->shift_nd,$obj->form,$obj->housing,$obj->many_description);
+                            $i++;
+                        }
+
+                        $retJSON=new Orders(false,$mass,null);
                     }
-                    $retJSON=new Orders(false,$mass);
                 }catch(Exception $ex){
                     $retJSON=new Orders(true,null);
                 }
-            }else{
+           /* }else{
                 if(isset($apiMethodParams->profession_id)){
                     try{
                         $mass=array();
@@ -528,7 +799,7 @@
                     $retJSON=new Orders(true,null);
                 }
 
-            }
+            }*/
             return $retJSON;
         }
 
@@ -538,16 +809,19 @@
                 try{
                     $mass=array();
                 	$sql=new apiBaseClass("andreymana_id121","localhost","andreymana_id121","&MS=$)zA07=J}dG2");
-                    $result=$sql->mySQLWorker->connectLink->query("
-                        SELECT `Advert`.id,`Advert`.`profession_id`,`Advert`.`industry_id`,`Advert`.`name`,`Advert`.`description`,`Advert`.`price`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS' FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`)WHERE (`Advert`.industry_id=".$apiMethodParams->industry_id.")"); 
+                    $result=$sql->mySQLWorker->connectLink->query("SELECT`Advert`.id,`Industry`.`Name` as 'industry',`Advert`.`name`,`Advert`.`description`,`Advert`.`skill`,`Advert`.`sex`,`Advert`.`age`,`Users`.`Name` as 'userN' ,`Users`.`Surname` as 'userS', `region`.`name` as 'reg',`Advert`.`start_date`,`Advert`.`count_day`,`Advert`.`citizenship`,`Advert`.`med_book`,`Advert`.`driver_license`,`Advert`.`other_right`,`Advert`.`experience`,`Advert`.`schedule`,`Advert`.`important`,`Advert`.`img` FROM `Advert` inner join `Users`on(`Advert`.`user_id`=`Users`.`id`) inner join `region`on(`Advert`.`region_id`=`region`.`id`) inner join `Industry`on(`Advert`.`industry_id`=`Industry`.`id`) WHERE ((`Advert`.industry_id=".$apiMethodParams->industry_id.")and(approved=1))");
                     $i=0;
-                    while ($obj = $result->fetch_object()) {
-                        $mass[$i]=new OrdersElem($obj->id,$obj->profession_id,$obj->industry_id,$obj->name,$obj->description,$obj->price,$obj->userN,$obj->userS);
-                        $i++;
+                    if($result->num_rows>=1){
+                        while ($obj = $result->fetch_object()) {
+                            $mass[$i]=new AdvertElem($obj->id,$obj->name,$obj->description,$obj->skill,$obj->sex,$obj->age,$obj->userN,$obj->userS,$obj->reg,$obj->start_date,$obj->count_day,$obj->citizenship,$obj->med_book,$obj->driver_license,$obj->other_right,$obj->experience,$obj->schedule,$obj->important,$obj->industry,$obj->img);
+                            $i++;
+                        }
+                        $retJSON=new Advert(false,$mass,null);
+                    }else{
+                        $retJSON=new Advert(true,null,"Нет пользователей ожидающих регистрации!");
                     }
-                    $retJSON=new Orders(false,$mass);
                 }catch(Exception $ex){
-                    $retJSON=new Orders(true,null);
+                    $retJSON=new Advert(true,null);
                 }
             }else{
                 if(isset($apiMethodParams->profession_id)){

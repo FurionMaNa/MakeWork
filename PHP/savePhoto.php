@@ -12,11 +12,10 @@
 	$path = 'PHP/image';
 	$target='';
 	if($_POST['src']!=""){
-		echo $_FILES['img']['name'];
 		$extension = strtolower(substr(strrchr($_FILES['img']['name'], '.'), 1));
 		$filename = getRandomFileName($path, $extension);
 		$target = $root. '/'.$path . '/' . $filename . '.' . $extension;
 		move_uploaded_file($_FILES['img']['tmp_name'], $target);
-		echo $target;
+		echo $path . '/' . $filename . '.' . $extension;
 	}
 ?>

@@ -38,8 +38,8 @@
                                                 $("#list").empty();
                                                 $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
                                                 if(!answ.response.error){
-                                                    for(var i=0;i<answ.response.orders.length;i++){
-                                                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                                                    for(var i=0;i<answ.response.advert.length;i++){
+                                                        $("#list").append("<tr>  <td width='10%'><img src='http://andreymana.beget.tech"+answ.response.advert[i].img+"' width='100px'></td><td width='15%'>"+answ.response.advert[i].userName+" "+answ.response.advert[i].userSurname+"</td><td width='65%'>Название: "+answ.response.advert[i].name+"<br>Описание: "+answ.response.advert[i].description+"<br> Оплата: "+answ.response.advert[i].price+"</td><td width='10%'>+</td></tr>");
                                                     }
                                                 }else{
                                                     alert("Нет вакансий");
@@ -114,8 +114,8 @@
                         $("#list").empty();
                         $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
                         if(!answ.response.error){
-                            for(var i=0;i<answ.response.orders.length;i++){
-                                $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                            for(var i=0;i<answ.response.advert.length;i++){
+                                $("#list").append("<tr>  <td width='10%'><img src='http://andreymana.beget.tech"+answ.response.advert[i].img+"' width='100px'></td><td width='15%'>"+answ.response.advert[i].userName+" "+answ.response.advert[i].userSurname+"</td><td width='65%'>Название: "+answ.response.advert[i].name+"<br>Описание: "+answ.response.advert[i].description+"<br> Оплата: "+answ.response.advert[i].price+"</td><td width='10%'>+</td></tr>");
                             }
                         }else{
                             alert("Нет вакансий");
@@ -135,8 +135,8 @@
                 $("#list").empty();
                 $("#list").append("<tr><th colspan='2'>Исполнитель</th><th>Анкетные данные</th><th>Выбрать в команду</th></tr>");
                 if(!answ.response.error){
-                    for(var i=0;i<answ.response.orders.length;i++){
-                        $("#list").append("<tr>  <td width='10%'></td><td width='15%'>"+answ.response.orders[i].userName+" "+answ.response.orders[i].userSurname+"</td><td width='65%'>Название: "+answ.response.orders[i].name+"<br>Описание: "+answ.response.orders[i].description+"<br> Оплата: "+answ.response.orders[i].price+"</td><td width='10%'>+</td></tr>");
+                    for(var i=0;i<answ.response.advert.length;i++){
+                        $("#list").append("<tr>  <td width='10%'><img src='http://andreymana.beget.tech"+answ.response.advert[i].img+"' width='100px'></td><td width='15%'>"+answ.response.advert[i].userName+" "+answ.response.advert[i].userSurname+"</td><td width='65%'>Название: "+answ.response.advert[i].name+"<br>Описание: "+answ.response.advert[i].description+"<br> Оплата: "+answ.response.advert[i].price+"</td><td width='10%'>+</td></tr>");
                     }
                 }else{
                     alert("Нет вакансий");
